@@ -1,2 +1,5 @@
 rootProject.name = "Android CC for OB"
 include ':app'
+include ':domain'
+include ':data'
+include ':core'

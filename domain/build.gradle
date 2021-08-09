@@ -1,23 +1,17 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'com.google.gms.google-services'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
-    buildFeatures {
-        dataBinding = true
-    }
-
     defaultConfig {
-        applicationId "com.example.androidccforob"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        multiDexEnabled true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -36,29 +30,14 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
-    packagingOptions {
-        exclude 'META-INF/*'
-    }
 }
 
 dependencies {
-    // glide
-    implementation rootProject.ext.deps.glide
-    kapt rootProject.ext.deps.glideAnnotation
 
-    // kotlin ktx
-    implementation rootProject.ext.deps.ktxCore
-
-    // ktx-navigation
-    implementation rootProject.ext.deps.ktxNavigationFragment
-    implementation rootProject.ext.deps.ktxNavigationUI
-
-    // android
-    implementation rootProject.ext.deps.recyclerView
-    implementation rootProject.ext.deps.constraintLayout
-    implementation rootProject.ext.deps.supportDesign
-    implementation rootProject.ext.deps.appCompat
+    // hilt
+    implementation rootProject.ext.deps.hilt
+    kapt rootProject.ext.deps.hiltAnnotations
 
     // internal
-    implementation project(path: ':data')
+    api project(path: ':core')
 }
