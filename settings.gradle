@@ -1,0 +1,2 @@
+rootProject.name = "Android CC for OB"
+include ':app'

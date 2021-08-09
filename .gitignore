@@ -1,0 +1,64 @@
+.externalNativeBuild
+.cxx
+local.properties
+vcs.xml
+gradle.xml
+kotlinc.xml
+$CACHE_FILE$
+compiler.xml
+.name
+
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+/.idea/codeStyles
+/.idea/misc.xml
+/.idea/markdown-navigator*
+/.idea/jarRepositories.xml
+.DS_Store
+/build
+/captures
+
+#fastlane
+installer/
+
+#built application files
+*.apk
+*.ap_
+*.abb
+app/release/
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Windows thumbnail db
+Thumbs.db
+
+# OSX files
+.DS_Store
+
+# Eclipse project files
+.classpath
+.project
+
+# Android Studio
+.idea
+#.idea/workspace.xml - remove # and delete .idea if it better suit your needs.
+*.iml
+.gradle
+build/
