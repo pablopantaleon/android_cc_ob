@@ -33,9 +33,11 @@ android {
 }
 
 dependencies {
+    // coroutines
+    api rootProject.ext.deps.kotlinCoroutinesCore
 
     // hilt
-    implementation rootProject.ext.deps.hilt
+    api rootProject.ext.deps.hilt
     kapt rootProject.ext.deps.hiltAnnotations
 
     // internal
