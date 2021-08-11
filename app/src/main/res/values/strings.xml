@@ -1,5 +1,18 @@
 <resources>
     <string name="app_name">Android CC for OB</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- General -->
+
+    <!-- Log In -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign In</string>
+    <string name="invalid_username">Invalid credentials</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="sign_in_to_your_account">Sign in to your account below 👇</string>
+
+    <!-- Profile -->
+    <string name="edit_your_profile">Edit Your Profile</string>
+
 </resources>
