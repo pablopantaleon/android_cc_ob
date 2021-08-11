@@ -54,13 +54,13 @@ interface UserRepository {
 	 * Add [Food] to favorites
 	 * @return Food with updated values
 	 */
-	fun addFoodToFavorites(): Flow<DataResult<Food>>
+	fun addFoodToFavorites(): Flow<DataResult<User>>
 
 	/**
 	 * Remove [Food] from favorites
 	 * @return Food with updated values
 	 */
-	fun removeFoodFromFavorites(): Flow<DataResult<Food>>
+	fun removeFoodFromFavorites(): Flow<DataResult<User>>
 
 	/**
 	 * Is [Food] liked

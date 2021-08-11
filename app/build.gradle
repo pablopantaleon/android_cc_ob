@@ -44,6 +44,8 @@ android {
 dependencies {
     // glide
     implementation rootProject.ext.deps.glide
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt rootProject.ext.deps.glideAnnotation
 
     // kotlin ktx

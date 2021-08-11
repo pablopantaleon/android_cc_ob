@@ -12,8 +12,6 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
 
@@ -38,4 +36,8 @@ dependencies {
 
     // logging
     api rootProject.ext.deps.timber
+
+    // testing
+    api rootProject.ext.deps.jUnit
+    api rootProject.ext.deps.mockito
 }
