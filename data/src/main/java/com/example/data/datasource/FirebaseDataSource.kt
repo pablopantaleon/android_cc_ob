@@ -11,4 +11,6 @@ interface FirebaseDataSource {
 
 	suspend fun getUserProfile(): UserDataModel
 
+	suspend fun isUserLoggedIn(): Boolean
+
 }

@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'com.google.gms.google-services'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -48,8 +49,9 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt rootProject.ext.deps.glideAnnotation
 
-    // kotlin ktx
+    // kotlin ktx & lifecycle
     implementation rootProject.ext.deps.ktxCore
+    implementation rootProject.ext.deps.lifecycle
 
     // ktx-navigation
     implementation rootProject.ext.deps.ktxNavigationFragment
@@ -60,6 +62,10 @@ dependencies {
     implementation rootProject.ext.deps.constraintLayout
     implementation rootProject.ext.deps.supportDesign
     implementation rootProject.ext.deps.appCompat
+
+    // hilt
+    implementation rootProject.ext.deps.hilt
+    kapt rootProject.ext.deps.hiltAnnotations
 
     // internal
     implementation project(path: ':data')

@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -43,6 +44,10 @@ dependencies {
 
     // coroutines - play services
     implementation rootProject.ext.deps.kotlinCoroutinesPlayServices
+
+    // hilt
+    implementation rootProject.ext.deps.hilt
+    kapt rootProject.ext.deps.hiltAnnotations
 
     // internal
     api project(path: ':domain')

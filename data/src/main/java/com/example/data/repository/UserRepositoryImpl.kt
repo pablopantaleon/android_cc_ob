@@ -34,7 +34,13 @@ class UserRepositoryImpl(
 	}
 
 	override fun isUserLoggedIn(): Flow<DataResult<Boolean>> {
-		TODO("Not yet implemented")
+		return flow {
+			emit(DataResult.Loading)
+			val result = firebaseDataSource.isUserLoggedIn()
+			emit(DataResult.Success(result))
+		}.catch {
+			emit(DataResult.Success(false))
+		}.flowOn(Dispatchers.IO)
 	}
 
 	override fun getUser(): Flow<DataResult<User>> {

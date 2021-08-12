@@ -37,7 +37,7 @@ dependencies {
     api rootProject.ext.deps.kotlinCoroutinesCore
 
     // hilt
-    api rootProject.ext.deps.hilt
+    implementation rootProject.ext.deps.hilt
     kapt rootProject.ext.deps.hiltAnnotations
 
     // internal

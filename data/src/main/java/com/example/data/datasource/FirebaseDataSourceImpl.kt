@@ -41,4 +41,6 @@ class FirebaseDataSourceImpl(
 		}
 		throw FirebaseAuthException("-1", "User not found")
 	}
+
+	override suspend fun isUserLoggedIn(): Boolean = firebaseAuth.currentUser != null
 }

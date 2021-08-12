@@ -1,5 +1,6 @@
 package com.example.domain.usecase
 
+import java.lang.Exception
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -7,5 +8,5 @@ import kotlinx.coroutines.flow.Flow
  */
 interface IsUserLoggedInUseCase {
 
-	fun invoke(): Flow<UseCaseResult<Boolean, Unit>>
+	fun invoke(): Flow<UseCaseResult<Boolean, Exception>>
 }
