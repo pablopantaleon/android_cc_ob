@@ -16,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.androidccforob.R
 import com.example.androidccforob.app.SnackbarFactory
 import com.example.androidccforob.databinding.FragmentFoodFeedBinding
+import com.example.androidccforob.profile.ProfileBottomSheetFragment
 import com.example.androidccforob.viewmodel.FeedViewModel
 import com.example.androidccforob.viewmodel.UserViewModel
 import com.example.domain.usecase.UseCaseResult
@@ -45,6 +46,20 @@ class FoodFeedFragment : Fragment() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+		observeLiveEvents()
+		binding.ivImageProfile.setOnClickListener {
+			val fragment = ProfileBottomSheetFragment()
+			fragment.show(parentFragmentManager, ProfileBottomSheetFragment.TAG)
+		}
+	}
+
+	/**
+	 * Subscribe to live events
+	 * 1. Is User logged in?
+	 * 2. Get all food items
+	 * 3. Get User Data
+	 */
+	private fun observeLiveEvents() {
 		lifecycleScope.launch {
 			lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
 				//

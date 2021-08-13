@@ -16,6 +16,9 @@
 
     <!-- Profile -->
     <string name="edit_your_profile">Edit Your Profile</string>
+    <string name="edit_your_profile_name">Your name</string>
+    <string name="edit_your_profile_city">Your city</string>
+    <string name="edit_your_profile_bio">A little about your self…</string>
 
     <!-- Food Feed -->
     <string name="food_feed_price">$%.2f</string>
