@@ -61,6 +61,9 @@ class ProfileBottomSheetFragment : BottomSheetDialogFragment() {
 								.centerCrop()
 								.apply(RequestOptions.circleCropTransform())
 								.into(binding.ivImageProfile)
+							binding.edName.setText(result.data.name)
+							binding.edCity.setText(result.data.city)
+							binding.edBio.setText(result.data.bio)
 						}
 					}
 				}

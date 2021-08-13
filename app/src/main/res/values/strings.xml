@@ -11,7 +11,6 @@
     <string name="action_sign_in">Sign In</string>
     <string name="invalid_username">Invalid credentials</string>
     <string name="invalid_password">Password must be >5 characters</string>
-    <string name="sign_out">Sign Out</string>
     <string name="sign_in_to_your_account">Sign in to your account below 👇</string>
 
     <!-- Profile -->
@@ -19,6 +18,8 @@
     <string name="edit_your_profile_name">Your name</string>
     <string name="edit_your_profile_city">Your city</string>
     <string name="edit_your_profile_bio">A little about your self…</string>
+    <string name="edit_your_profile_save_profile">Save Profile</string>
+    <string name="edit_your_profile_sign_out">Sign Out</string>
 
     <!-- Food Feed -->
     <string name="food_feed_price">$%.2f</string>

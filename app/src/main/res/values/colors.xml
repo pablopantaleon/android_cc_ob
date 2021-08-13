@@ -9,6 +9,6 @@
     <color name="profile_hint_color">#BCB3AB</color>
 
     <color name="login_ed_color">#E6DCCD</color>
-    <color name="login_ed_text_color">#3F2D20</color>
+    <color name="edittext_color">#3F2D20</color>
 
 </resources>
