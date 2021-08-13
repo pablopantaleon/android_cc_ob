@@ -1,9 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".feed.FoodFeedFragment">
+    android:fitsSystemWindows="true">
 
+    <TextView
+        android:id="@+id/tv_header_first_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/general_margin"
+        android:layout_marginTop="@dimen/general_margin"
+        android:fontFamily="@font/poppinsregular"
+        android:includeFontPadding="false"
+        android:text="@string/food_feed_what_would"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/tv_header_second_line"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppinsbold"
+        android:includeFontPadding="false"
+        android:text="@string/food_feed_you_like"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="@id/tv_header_first_line"
+        app:layout_constraintStart_toStartOf="@id/tv_header_first_line"
+        app:layout_constraintTop_toBottomOf="@id/tv_header_first_line" />
+
+    <ImageView
+        android:id="@+id/iv_image_profile"
+        android:layout_width="80dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="20dp"
+        android:contentDescription="@string/general_content_description"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@id/tv_header_second_line"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_header_first_line"
+        tools:src="@tools:sample/avatars" />
+
+    <View
+        android:id="@+id/v_filter"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_header_second_line" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_feed_food"
+        android:name="com.example.codechallenge.SearchItemFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        app:layoutManager="LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/v_filter"
+        tools:context=".SearchItemFragment"
+        tools:listitem="@layout/list_item_food_feed" />
+
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/secondary_color"
+        android:indeterminateTintMode="src_in"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

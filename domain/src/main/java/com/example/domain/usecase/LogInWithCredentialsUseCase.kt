@@ -8,5 +8,5 @@ import kotlinx.coroutines.flow.Flow
  */
 interface LogInWithCredentialsUseCase {
 
-	fun invoke(): Flow<UseCaseResult<User, Unit>>
+	fun invoke(email: String, password: String): Flow<UseCaseResult<User, Exception>>
 }

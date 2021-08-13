@@ -2,6 +2,7 @@ package com.example.data.repository
 
 import com.example.data.datasource.FirebaseDataSource
 import com.example.data.mapper.EntityMapper
+import com.example.domain.repository.FoodRepository
 import com.example.domain.repository.UserRepository
 import dagger.Module
 import dagger.Provides
@@ -22,4 +23,11 @@ internal class RepositoryModule {
 		firebaseDataSource: FirebaseDataSource,
 		entityMapper: EntityMapper,
 	): UserRepository = UserRepositoryImpl(firebaseDataSource, entityMapper)
+
+	@Singleton
+	@Provides
+	fun providesFoodRepository(
+		firebaseDataSource: FirebaseDataSource,
+		entityMapper: EntityMapper,
+	): FoodRepository = FoodRepositoryImpl(firebaseDataSource, entityMapper)
 }

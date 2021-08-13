@@ -2,112 +2,119 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/general_margin"
     android:paddingTop="@dimen/general_margin"
     android:paddingRight="@dimen/general_margin"
     android:paddingBottom="@dimen/general_margin"
-    tools:context=".ui.login.LoginFragment">
+    tools:context=".login.LogInFragment">
 
     <ImageView
-        android:id="@+id/logo"
+        android:id="@+id/iv_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="83dp"
+        android:contentDescription="@string/general_content_description"
         android:src="@drawable/logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/food_app_tv"
+        android:id="@+id/tv_food_app"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:contentDescription="@string/general_content_description"
         android:src="@drawable/food_app"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/logo" />
+        app:layout_constraintTop_toBottomOf="@id/iv_logo" />
 
     <ImageView
-        android:id="@+id/food_fresh_tv"
+        android:id="@+id/tv_food_fresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:contentDescription="@string/general_content_description"
         android:src="@drawable/firebase_fresh_food"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/food_app_tv" />
+        app:layout_constraintTop_toBottomOf="@id/tv_food_app" />
 
     <TextView
-        android:id="@+id/sing_in_tv"
+        android:id="@+id/tv_sign_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="47dp"
         android:text="@string/sign_in_to_your_account"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/food_fresh_tv" />
+        app:layout_constraintTop_toBottomOf="@id/tv_food_fresh" />
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/username"
+        android:id="@+id/ed_username"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="24dp"
+        android:background="@drawable/ed_login_background"
         android:hint="@string/prompt_email"
         android:inputType="textEmailAddress"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:textColor="@color/login_ed_text_color"
+        android:textColorHint="@color/login_ed_text_color"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sing_in_tv" />
+        app:layout_constraintTop_toBottomOf="@id/tv_sign_in" />
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/password"
+        android:id="@+id/ed_password"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
+        android:background="@drawable/ed_login_background"
         android:hint="@string/prompt_password"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:textColor="@color/login_ed_text_color"
+        android:textColorHint="@color/login_ed_text_color"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        app:layout_constraintTop_toBottomOf="@+id/ed_username" />
 
-    <Button
-        android:id="@+id/login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginBottom="64dp"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_login"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/btn_login_background"
+        android:enabled="false"
         android:text="@string/action_sign_in"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password"
-        app:layout_constraintVertical_bias="0.2" />
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@id/ed_password"
+        app:layout_constraintStart_toStartOf="@id/ed_password"
+        app:layout_constraintTop_toBottomOf="@id/ed_password" />
 
     <ProgressBar
-        android:id="@+id/loading"
+        android:id="@+id/pb_loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="64dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/password"
-        app:layout_constraintStart_toStartOf="@+id/password"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintEnd_toEndOf="@id/btn_login"
+        app:layout_constraintStart_toStartOf="@id/btn_login"
+        app:layout_constraintTop_toTopOf="@id/btn_login" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

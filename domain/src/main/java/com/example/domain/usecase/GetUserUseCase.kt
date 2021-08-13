@@ -8,5 +8,5 @@ import kotlinx.coroutines.flow.Flow
  */
 interface GetUserUseCase {
 
-	fun invoke(): Flow<UseCaseResult<User, Unit>>
+	fun invoke(): Flow<UseCaseResult<User, String>>
 }

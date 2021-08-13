@@ -1,62 +1,101 @@
 package com.example.androidccforob.feed
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.example.androidccforob.R
+import com.example.androidccforob.app.SnackbarFactory
+import com.example.androidccforob.databinding.FragmentFoodFeedBinding
+import com.example.androidccforob.viewmodel.FeedViewModel
+import com.example.androidccforob.viewmodel.UserViewModel
+import com.example.domain.usecase.UseCaseResult
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [FoodFeedFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class FoodFeedFragment : Fragment() {
 
-	// TODO: Rename and change types of parameters
-	private var param1: String? = null
-	private var param2: String? = null
+	private var _binding: FragmentFoodFeedBinding? = null
+	private val binding get() = _binding!!
 
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-		arguments?.let {
-			param1 = it.getString(ARG_PARAM1)
-			param2 = it.getString(ARG_PARAM2)
-		}
-	}
+	// view-models
+	private val userViewModel: UserViewModel by viewModels()
+	private val feedViewModel: FeedViewModel by viewModels()
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
-	): View? {
-		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_food_feed, container, false)
+	): View {
+		_binding = FragmentFoodFeedBinding.inflate(inflater, container, false)
+		return binding.root
 	}
 
-	companion object {
-
-		/**
-		 * Use this factory method to create a new instance of
-		 * this fragment using the provided parameters.
-		 *
-		 * @param param1 Parameter 1.
-		 * @param param2 Parameter 2.
-		 * @return A new instance of fragment FoodFeedFragment.
-		 */
-		// TODO: Rename and change types and number of parameters
-		@JvmStatic
-		fun newInstance(param1: String, param2: String) =
-			FoodFeedFragment().apply {
-				arguments = Bundle().apply {
-					putString(ARG_PARAM1, param1)
-					putString(ARG_PARAM2, param2)
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+		lifecycleScope.launch {
+			lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+				//
+				// observe auth state changes
+				launch {
+					userViewModel.isLoggedInState.collect { result ->
+						// user is logged in
+						if (result is UseCaseResult.Succeed && !result.data || result is UseCaseResult.Failed) {
+							// TODO: logout
+						}
+					}
+				}
+				//
+				// draw the proper UI in order to reflect the current state
+				launch {
+					feedViewModel.allFoodItemsState.collect { result ->
+						when (result) {
+							is UseCaseResult.Failed -> {
+								binding.pbLoading.isVisible = false
+								SnackbarFactory.createErrorMessage(
+									binding.root,
+									getString(R.string.default_error)
+								).show()
+							}
+							is UseCaseResult.Loading -> {
+								binding.pbLoading.isVisible = true
+							}
+							is UseCaseResult.Succeed -> {
+								binding.pbLoading.isVisible = false
+								binding.rvFeedFood.adapter = FeedFoodAdapter(result.data)
+							}
+							else -> {
+								binding.pbLoading.isVisible = false
+							}
+						}
+					}
+				}
+				//
+				// observe auth state changes
+				launch {
+					userViewModel.userState.collect { result ->
+						if (result is UseCaseResult.Succeed) {
+							Glide.with(binding.ivImageProfile)
+								.load(result.data.avatarUrl)
+								.centerCrop()
+								.apply(RequestOptions.bitmapTransform(RoundedCorners(20)))
+								.into(binding.ivImageProfile)
+						}
+					}
 				}
 			}
+		}
 	}
 }

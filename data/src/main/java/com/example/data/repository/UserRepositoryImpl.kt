@@ -8,8 +8,10 @@ import com.example.domain.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import timber.log.Timber
 
 /**
  * Created by Pablo Reyes [devpab@gmail.com] on 11/08/21.
@@ -35,16 +37,21 @@ class UserRepositoryImpl(
 
 	override fun isUserLoggedIn(): Flow<DataResult<Boolean>> {
 		return flow {
-			emit(DataResult.Loading)
-			val result = firebaseDataSource.isUserLoggedIn()
-			emit(DataResult.Success(result))
-		}.catch {
-			emit(DataResult.Success(false))
-		}.flowOn(Dispatchers.IO)
+			firebaseDataSource.observeUserLoggedInState().collect { result ->
+				emit(DataResult.Success(result))
+			}
+		}
 	}
 
 	override fun getUser(): Flow<DataResult<User>> {
-		TODO("Not yet implemented")
+		return flow {
+			emit(DataResult.Loading)
+			val result = firebaseDataSource.getUserProfile()
+			emit(DataResult.Success(entityMapper.toUser(result)))
+		}.catch { e ->
+			Timber.e(e)
+			emit(DataResult.Failed(e.message ?: ""))
+		}
 	}
 
 	override fun updateUser(

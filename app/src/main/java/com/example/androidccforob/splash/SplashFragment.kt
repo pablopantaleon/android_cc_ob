@@ -34,10 +34,11 @@ class SplashFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		lifecycleScope.launch {
-			userViewModel.state
+			userViewModel.isLoggedInState
 				.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
 				.collect { result ->
 					when (result) {
+						is UseCaseResult.Initial,
 						is UseCaseResult.Loading -> {
 							/* NOOP */
 						}
@@ -45,7 +46,7 @@ class SplashFragment : Fragment() {
 							if (result.data) { // is logged in
 								findNavController().navigate(R.id.action_splashFragment_to_logInFragment)
 							} else {
-								findNavController().navigate(R.id.action_splashFragment_to_logInFragment)
+								findNavController().navigate(R.id.action_splashFragment_to_foodFeedFragment)
 							}
 						}
 						is UseCaseResult.Failed -> {

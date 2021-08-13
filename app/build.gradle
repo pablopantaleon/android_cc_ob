@@ -10,10 +10,6 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
-    buildFeatures {
-        dataBinding = true
-    }
-
     defaultConfig {
         applicationId "com.example.androidccforob"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -39,6 +35,9 @@ android {
     }
     packagingOptions {
         exclude 'META-INF/*'
+    }
+    buildFeatures {
+        viewBinding = true
     }
 }
 

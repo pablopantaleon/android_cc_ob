@@ -4,4 +4,9 @@
     <color name="primary_color">#84BD93</color>
     <color name="secondary_color">#D04C0E</color>
     <color name="textfield_color">#D3BBAA</color>
+    <color name="primary_text_color">#73665C</color>
+
+    <color name="login_ed_color">#E6DCCD</color>
+    <color name="login_ed_text_color">#3F2D20</color>
+
 </resources>

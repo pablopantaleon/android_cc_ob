@@ -7,9 +7,9 @@ package com.example.domain.entity
  */
 data class Food(
 	val id: String,
-	val imageUrl: String,
+	val imageUrl: String?,
 	val name: String,
-	val price: Double,
+	val price: Double?,
 	val rating: Double,
 	val categories: List<String> = emptyList(),
 )

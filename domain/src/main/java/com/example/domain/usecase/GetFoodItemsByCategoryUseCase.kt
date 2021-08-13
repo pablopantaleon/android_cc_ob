@@ -8,5 +8,5 @@ import kotlinx.coroutines.flow.Flow
  */
 interface GetFoodItemsByCategoryUseCase {
 
-	fun invoke(): Flow<UseCaseResult<List<Food>, Unit>>
+	fun invoke(categoryId: String): Flow<UseCaseResult<List<Food>, Unit>>
 }
