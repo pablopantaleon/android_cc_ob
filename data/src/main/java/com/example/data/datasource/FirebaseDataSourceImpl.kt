@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 
 private const val FIREBASE_KEY_USERS = "users"
 private const val FIREBASE_KEY_ITEMS = "items"
@@ -35,6 +36,7 @@ class FirebaseDataSourceImpl(
 			return getUserProfile()
 		}
 
+		Timber.e("Error while trying to login with credentials using: $email")
 		throw FirebaseAuthInvalidCredentialsException("-1", "Invalid Credentials")
 	}
 
@@ -51,13 +53,17 @@ class FirebaseDataSourceImpl(
 				return@getUserProfile it
 			}
 		}
+
+		Timber.e("Error while trying to get \"User Profile\"; error=User Not Found")
 		throw FirebaseAuthException("-1", "User not found")
 	}
 
 	override suspend fun observeUserLoggedInState(): Flow<Boolean> {
 		return callbackFlow {
 			val listener = FirebaseAuth.AuthStateListener { result ->
-				sendBlocking(result.currentUser != null)
+				val isUserLoggedIn: Boolean = result.currentUser != null
+				Timber.d("Is User Logged In: $isUserLoggedIn")
+				sendBlocking(isUserLoggedIn)
 			}
 			firebaseAuth.addAuthStateListener(listener)
 			awaitClose { firebaseAuth.removeAuthStateListener(listener) }

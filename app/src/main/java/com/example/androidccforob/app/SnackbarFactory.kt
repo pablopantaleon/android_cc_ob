@@ -24,22 +24,9 @@ object SnackbarFactory {
 		val errorColor = view.context.resolveColorAttr(R.attr.colorError)
 		val textColor = ContextCompat.getColor(view.context, android.R.color.white)
 
-		return Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE).apply {
+		return Snackbar.make(view, message, Snackbar.LENGTH_LONG).apply {
 			setBackgroundTint(errorColor)
 			setTextColor(textColor)
-		}
-	}
-
-	/**
-	 * Create [Snackbar] for default error message.  The default error message is retrieved from the
-	 * [StringProvider] ([GENERIC_ERROR])
-	 * @param view The view to find a parent from.  This view is also used to find the anchor view
-	 * when calling {@link Snackbar#setAnchorView(int)}.
-	 * @return null if the default error message is missing
-	 */
-	fun createDefaultError(view: View): Snackbar? {
-		return view.context?.getString(R.string.default_error)?.let { errorMessage ->
-			createErrorMessage(view, errorMessage)
 		}
 	}
 }

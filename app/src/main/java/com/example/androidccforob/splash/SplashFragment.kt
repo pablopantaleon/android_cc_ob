@@ -44,9 +44,9 @@ class SplashFragment : Fragment() {
 						}
 						is UseCaseResult.Succeed -> {
 							if (result.data) { // is logged in
-								findNavController().navigate(R.id.action_splashFragment_to_logInFragment)
-							} else {
 								findNavController().navigate(R.id.action_splashFragment_to_foodFeedFragment)
+							} else {
+								findNavController().navigate(R.id.action_splashFragment_to_logInFragment)
 							}
 						}
 						is UseCaseResult.Failed -> {

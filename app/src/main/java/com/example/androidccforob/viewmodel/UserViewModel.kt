@@ -1,8 +1,8 @@
 package com.example.androidccforob.viewmodel
 
-import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.androidccforob.app.DataValidator
 import com.example.androidccforob.login.LoginFormState
 import com.example.domain.entity.User
 import com.example.domain.usecase.GetUserUseCase
@@ -27,13 +27,14 @@ import kotlinx.coroutines.launch
 class UserViewModel @Inject constructor(
 	isUserLoggedInUseCase: IsUserLoggedInUseCase,
 	getUserUseCase: GetUserUseCase,
+	private val dataValidator: DataValidator,
 	private val logInWithCredentialsUseCase: LogInWithCredentialsUseCase,
 ) : ViewModel() {
 
 	val isLoggedInState = isUserLoggedInUseCase.invoke().stateIn(
 		viewModelScope,
 		WhileSubscribed(500),
-		UseCaseResult.Loading
+		UseCaseResult.Initial
 	)
 	val userState = getUserUseCase.invoke().stateIn(
 		viewModelScope,
@@ -55,24 +56,12 @@ class UserViewModel @Inject constructor(
 	}
 
 	fun loginDataChanged(username: String, password: String) {
+		val valid =
+			!dataValidator.isEmailValid(username) && !dataValidator.isPasswordValid(password)
 		_logInFormValidationState.value = LoginFormState(
-			usernameError = !isUserNameValid(username),
-			passwordError = !isPasswordValid(password),
-			hasValidData = !isUserNameValid(username) && !isPasswordValid(password)
+			usernameError = !dataValidator.isEmailValid(username),
+			passwordError = !dataValidator.isPasswordValid(password),
+			hasValidData = valid
 		)
-	}
-
-	// A placeholder username validation check
-	private fun isUserNameValid(username: String): Boolean {
-		return if (username.contains("@")) {
-			Patterns.EMAIL_ADDRESS.matcher(username).matches()
-		} else {
-			username.isNotBlank()
-		}
-	}
-
-	// A placeholder password validation check
-	private fun isPasswordValid(password: String): Boolean {
-		return password.length > 5
 	}
 }
