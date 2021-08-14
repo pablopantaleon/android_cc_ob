@@ -62,6 +62,7 @@ class ProfileBottomSheetFragment : BottomSheetDialogFragment() {
 		observeLiveEvents()
 		binding.signOut.setOnClickListener {
 			userViewModel.logOut()
+			dismiss()
 		}
 		binding.saveProfile.setOnClickListener {
 			val name = binding.edName.editableText.toString()

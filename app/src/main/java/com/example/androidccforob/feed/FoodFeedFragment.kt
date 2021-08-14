@@ -10,6 +10,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -20,7 +22,6 @@ import com.example.androidccforob.profile.ProfileBottomSheetFragment
 import com.example.androidccforob.viewmodel.FeedViewModel
 import com.example.androidccforob.viewmodel.UserViewModel
 import com.example.domain.usecase.UseCaseResult
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -76,9 +77,16 @@ class FoodFeedFragment : Fragment() {
 				// observe auth state changes
 				launch {
 					userViewModel.isLoggedInState.collect { result ->
-						// user is logged in
+						// user is not logged in
 						if (result is UseCaseResult.Succeed && !result.data || result is UseCaseResult.Failed) {
-							// TODO: logout
+							val navOptions = NavOptions.Builder()
+							navOptions.setPopUpTo(R.id.splashFragment, true)
+							navOptions.setLaunchSingleTop(true)
+							findNavController().navigate(
+								R.id.action_foodFeedFragment_to_logInFragment,
+								null,
+								navOptions.build()
+							)
 						}
 					}
 				}

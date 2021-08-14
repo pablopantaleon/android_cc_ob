@@ -20,7 +20,11 @@
         android:id="@+id/foodFeedFragment"
         android:name="com.example.androidccforob.feed.FoodFeedFragment"
         android:label="fragment_food_feed"
-        tools:layout="@layout/fragment_food_feed" />
+        tools:layout="@layout/fragment_food_feed" >
+        <action
+            android:id="@+id/action_foodFeedFragment_to_logInFragment"
+            app:destination="@id/logInFragment" />
+    </fragment>
     <fragment
         android:id="@+id/logInFragment"
         android:name="com.example.androidccforob.login.LogInFragment"
