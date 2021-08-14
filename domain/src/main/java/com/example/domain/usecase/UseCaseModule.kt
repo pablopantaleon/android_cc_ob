@@ -2,8 +2,7 @@ package com.example.domain.usecase
 
 import com.example.domain.repository.FoodRepository
 import com.example.domain.repository.UserRepository
-import com.example.domain.usecase.impl.GetAllFoodItemsUseCaseImpl
-import com.example.domain.usecase.impl.GetFoodItemsByCategoryUseCaseImpl
+import com.example.domain.usecase.impl.GetFoodItemsUseCaseImpl
 import com.example.domain.usecase.impl.GetUserUseCaseImpl
 import com.example.domain.usecase.impl.IsUserLoggedInUseCaseImpl
 import com.example.domain.usecase.impl.LogInWithCredentialsUseCaseImpl
@@ -22,15 +21,9 @@ object UseCaseModule {
 
 	@Provides
 	@ViewModelScoped
-	fun providesAllFoodItems(
+	fun providesFoodItems(
 		foodRepository: FoodRepository
-	): GetAllFoodItemsUseCase = GetAllFoodItemsUseCaseImpl(foodRepository)
-
-	@Provides
-	@ViewModelScoped
-	fun providesFoodItemsByCategoryId(
-		foodRepository: FoodRepository
-	): GetFoodItemsByCategoryUseCase = GetFoodItemsByCategoryUseCaseImpl(foodRepository)
+	): GetFoodItemsUseCase = GetFoodItemsUseCaseImpl(foodRepository)
 
 	@Provides
 	@ViewModelScoped

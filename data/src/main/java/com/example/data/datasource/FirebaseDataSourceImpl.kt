@@ -70,7 +70,7 @@ class FirebaseDataSourceImpl(
 		}.buffer(Channel.CONFLATED) // send the latest value if conflicts exists
 	}
 
-	override suspend fun getAllFoodItems(): List<FoodDataModel> {
+	override suspend fun getFoodItems(): List<FoodDataModel> {
 		val result = firestore.collection(FIREBASE_KEY_ITEMS).get().await()
 		val items = mutableListOf<FoodDataModel>()
 		result.forEach { queryDocumentSnapshot ->
@@ -78,9 +78,5 @@ class FirebaseDataSourceImpl(
 			items.add(value)
 		}
 		return items
-	}
-
-	override suspend fun getFoodItemsByCategoryId(categoryId: String): List<FoodDataModel> {
-		TODO("Not yet implemented")
 	}
 }

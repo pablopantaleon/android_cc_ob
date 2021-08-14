@@ -21,6 +21,7 @@ import com.example.androidccforob.viewmodel.FeedViewModel
 import com.example.androidccforob.viewmodel.UserViewModel
 import com.example.domain.usecase.UseCaseResult
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -35,6 +36,10 @@ class FoodFeedFragment : Fragment() {
 	// view-models
 	private val userViewModel: UserViewModel by viewModels()
 	private val feedViewModel: FeedViewModel by viewModels()
+
+	// util
+	@Inject
+	lateinit var feedDataAdapter: FeedDataAdapter
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
@@ -88,12 +93,21 @@ class FoodFeedFragment : Fragment() {
 								binding.pbLoading.isVisible = true
 							}
 							is UseCaseResult.Succeed -> {
+								// setup Food Adapter
+								val foodAdapter = FeedFoodAdapter(result.data)
 								binding.pbLoading.isVisible = false
-								binding.rvFeedFood.adapter = FeedFoodAdapter(result.data)
+								binding.rvFeedFood.adapter = foodAdapter
+
+								// setup Food Category Adapter
+								val categories = feedDataAdapter.getFeedFoodCategories(result.data)
+								binding.rvCategories.adapter =
+									FoodCategoryAdapter(categories) { filter ->
+										foodAdapter.update(
+											feedViewModel.onFilterChanged(filter, result)
+										)
+									}
 							}
-							else -> {
-								binding.pbLoading.isVisible = false
-							}
+							else -> binding.pbLoading.isVisible = false
 						}
 					}
 				}

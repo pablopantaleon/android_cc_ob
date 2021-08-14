@@ -44,17 +44,26 @@
         app:layout_constraintTop_toTopOf="@id/tv_header_first_line"
         tools:src="@tools:sample/avatars" />
 
-    <View
-        android:id="@+id/v_filter"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_categories"
         android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:overScrollMode="never"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        app:layoutManager="LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_header_second_line" />
+        app:layout_constraintTop_toBottomOf="@id/tv_header_second_line"
+        tools:context=".SearchItemFragment"
+        tools:listitem="@layout/list_item_category" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_feed_food"
-        android:name="com.example.codechallenge.SearchItemFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginLeft="16dp"
@@ -65,8 +74,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/v_filter"
-        tools:context=".SearchItemFragment"
+        app:layout_constraintTop_toBottomOf="@id/rv_categories"
+        tools:context=".FoodFeedFragment"
         tools:listitem="@layout/list_item_food_feed" />
 
     <ProgressBar

@@ -31,6 +31,10 @@ class UserViewModel @Inject constructor(
 	private val logInWithCredentialsUseCase: LogInWithCredentialsUseCase,
 ) : ViewModel() {
 
+	/**
+	 * ## Immutable Flow States
+	 * Helps to listen about new states, subscribe using the View
+	 */
 	val isLoggedInState = isUserLoggedInUseCase.invoke().stateIn(
 		viewModelScope,
 		WhileSubscribed(500),
@@ -41,12 +45,22 @@ class UserViewModel @Inject constructor(
 		WhileSubscribed(500),
 		UseCaseResult.Loading
 	)
+
+	/**
+	 * ## Mutable/Immutable Flow States
+	 * These flows help to communicate ViewModel actions to subscribed Views
+	 */
 	private val _logInState =
 		MutableStateFlow<UseCaseResult<User, Exception>>(UseCaseResult.Initial)
 	val logInState: StateFlow<UseCaseResult<User, Exception>> = _logInState
 	private val _logInFormValidationState = MutableStateFlow(LoginFormState())
 	val logInFormValidationState: StateFlow<LoginFormState> = _logInFormValidationState
 
+	/**
+	 * Log In using credentials. If success [isLoggedInState] is updated
+	 * @param email
+	 * @param password
+	 */
 	fun logIn(email: String, password: String) {
 		viewModelScope.launch {
 			logInWithCredentialsUseCase.invoke(email, password).collect { result ->
@@ -55,11 +69,17 @@ class UserViewModel @Inject constructor(
 		}
 	}
 
-	fun loginDataChanged(username: String, password: String) {
+	/**
+	 * Validate if the "email and password" provided meets the requirements
+	 * The validation updates the [logInFormValidationState]
+	 * @param email
+	 * @param password
+	 */
+	fun onLogInDataChanged(email: String, password: String) {
 		val valid =
-			!dataValidator.isEmailValid(username) && !dataValidator.isPasswordValid(password)
+			!dataValidator.isEmailValid(email) && !dataValidator.isPasswordValid(password)
 		_logInFormValidationState.value = LoginFormState(
-			usernameError = !dataValidator.isEmailValid(username),
+			usernameError = !dataValidator.isEmailValid(email),
 			passwordError = !dataValidator.isPasswordValid(password),
 			hasValidData = valid
 		)

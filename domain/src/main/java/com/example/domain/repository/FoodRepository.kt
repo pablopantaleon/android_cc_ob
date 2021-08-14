@@ -12,12 +12,6 @@ interface FoodRepository {
 	 * Get all food items
 	 * @return List of food items
 	 */
-	fun getAllFoodItems(): Flow<DataResult<List<Food>>>
-
-	/**
-	 * Get all food items using a [categoryId] as a filter value
-	 * @return List of food items associated to the provided [categoryId]
-	 */
-	fun getFoodItemsByCategoryId(categoryId: String): Flow<DataResult<List<Food>>>
+	fun getFoodItems(): Flow<DataResult<List<Food>>>
 
 }

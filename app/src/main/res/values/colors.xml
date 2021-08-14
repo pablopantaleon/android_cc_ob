@@ -6,9 +6,9 @@
     <color name="textfield_color">#D3BBAA</color>
     <color name="primary_text_color">#73665C</color>
     <color name="profile_background_color">#FFE2CD</color>
-    <color name="profile_hint_color">#BCB3AB</color>
+    <color name="hint_color">#BCB3AB</color>
 
     <color name="login_ed_color">#E6DCCD</color>
-    <color name="edittext_color">#3F2D20</color>
+    <color name="text_color">#3F2D20</color>
 
 </resources>

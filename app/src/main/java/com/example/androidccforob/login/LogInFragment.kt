@@ -127,7 +127,7 @@ class LogInFragment : Fragment() {
 				}
 
 				override fun afterTextChanged(s: Editable) {
-					userViewModel.loginDataChanged(
+					userViewModel.onLogInDataChanged(
 						edUsername.text.toString(),
 						edPassword.text.toString()
 					)

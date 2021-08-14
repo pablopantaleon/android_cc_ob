@@ -18,19 +18,15 @@ class FoodRepositoryImpl(
 	private val entityMapper: EntityMapper,
 ) : FoodRepository {
 
-	override fun getAllFoodItems(): Flow<DataResult<List<Food>>> {
+	override fun getFoodItems(): Flow<DataResult<List<Food>>> {
 		return flow {
 			emit(DataResult.Loading)
-			val result = firebaseDataSource.getAllFoodItems()
+			val result = firebaseDataSource.getFoodItems()
 			val foodList = entityMapper.toFoodList(result)
 			emit(DataResult.Success(foodList))
 		}.catch { e ->
 			Timber.e(e)
 			emit(DataResult.Failed("Unkown Error"))
 		}
-	}
-
-	override fun getFoodItemsByCategoryId(categoryId: String): Flow<DataResult<List<Food>>> {
-		TODO("Not yet implemented")
 	}
 }

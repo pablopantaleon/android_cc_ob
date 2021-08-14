@@ -14,7 +14,7 @@ import com.example.domain.entity.Food
  * Created by Pablo Reyes [devpab@gmail.com] on 12/08/21.
  */
 class FeedFoodAdapter(
-	private val values: List<Food>
+	private var values: List<Food>
 ) : RecyclerView.Adapter<FeedFoodAdapter.ViewHolder>() {
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,6 +35,11 @@ class FeedFoodAdapter(
 	}
 
 	override fun getItemCount(): Int = values.size
+
+	fun update(food: List<Food>) {
+		this.values = food
+		notifyDataSetChanged()
+	}
 
 	inner class ViewHolder(binding: ListItemFoodFeedBinding) :
 		RecyclerView.ViewHolder(binding.root) {

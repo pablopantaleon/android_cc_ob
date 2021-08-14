@@ -15,8 +15,6 @@ interface FirebaseDataSource {
 
 	suspend fun observeUserLoggedInState(): Flow<Boolean>
 
-	suspend fun getAllFoodItems(): List<FoodDataModel>
-
-	suspend fun getFoodItemsByCategoryId(categoryId: String): List<FoodDataModel>
+	suspend fun getFoodItems(): List<FoodDataModel>
 
 }
