@@ -62,17 +62,17 @@ class LogInFragment : Fragment() {
 					userViewModel.logInState.collect { result ->
 						when (result) {
 							is UseCaseResult.Failed -> {
-								changeViewState(true)
+								updateLogInUiStateForm(true)
 								SnackbarFactory.createErrorMessage(
 									binding.root,
 									result.error.message ?: ""
 								).show()
 							}
 							is UseCaseResult.Loading -> {
-								changeViewState(false)
+								updateLogInUiStateForm(false)
 							}
 							else -> {
-								changeViewState(true)
+								updateLogInUiStateForm(true)
 							}
 						}
 					}
@@ -104,7 +104,8 @@ class LogInFragment : Fragment() {
 	 * This view has two states: Normal state and Loading (trying to log in),
 	 * while the request is in process the loading state is enable; normal state otherwise
 	 */
-	private fun changeViewState(enable: Boolean) {
+	private fun updateLogInUiStateForm(enable: Boolean) {
+		binding.pbLoading.isVisible = !enable
 		binding.btnLogin.isVisible = enable
 		binding.edUsername.isEnabled = enable
 		binding.edPassword.isEnabled = enable
