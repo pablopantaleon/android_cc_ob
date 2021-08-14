@@ -40,11 +40,11 @@ class FeedViewModel @Inject constructor(
 	fun onFilterChanged(
 		categoryId: String,
 		food: UseCaseResult.Succeed<List<Food>>
-	): List<Food> {
+	): List<String> {
 		return if (categoryId == FeedDataAdapter.FILTER_ALL) {
-			food.data
+			food.data.map { it.id }
 		} else {
-			food.data.filter { it.categories.contains(categoryId) }
+			food.data.filter { it.categories.contains(categoryId) }.map { it.id }
 		}
 	}
 

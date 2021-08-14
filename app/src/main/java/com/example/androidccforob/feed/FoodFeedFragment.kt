@@ -104,14 +104,15 @@ class FoodFeedFragment : Fragment() {
 								}
 								binding.pbLoading.isVisible = false
 								binding.rvFeedFood.adapter = foodFeedAdapter
+
 								// setup Food Category Adapter
 								val categories = feedDataAdapter.getFeedFoodCategories(result.data)
 								binding.rvCategories.adapter =
 									FoodCategoryAdapter(categories) { filter ->
-										val filtered = feedViewModel.onFilterChanged(filter, result)
-										foodFeedAdapter.update(
-											feedDataAdapter.getFeedFoodData(filtered)
-										)
+										val filteredIds =
+											feedViewModel.onFilterChanged(filter, result)
+										val filteredFoods = foods.filter { it.id in filteredIds }
+										foodFeedAdapter.update(filteredFoods)
 									}
 							}
 							else -> binding.pbLoading.isVisible = false
