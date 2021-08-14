@@ -37,6 +37,9 @@ class FoodFeedFragment : Fragment() {
 	private val userViewModel: UserViewModel by viewModels()
 	private val feedViewModel: FeedViewModel by viewModels()
 
+	// adapters
+	private lateinit var foodFeedAdapter: FoodFeedAdapter
+
 	// util
 	@Inject
 	lateinit var feedDataAdapter: FeedDataAdapter
@@ -63,6 +66,7 @@ class FoodFeedFragment : Fragment() {
 	 * 1. Is User logged in?
 	 * 2. Get all food items
 	 * 3. Get User Data
+	 * 4. Update liked state
 	 */
 	private fun observeLiveEvents() {
 		lifecycleScope.launch {
@@ -94,16 +98,19 @@ class FoodFeedFragment : Fragment() {
 							}
 							is UseCaseResult.Succeed -> {
 								// setup Food Adapter
-								val foodAdapter = FeedFoodAdapter(result.data)
+								val foods = feedDataAdapter.getFeedFoodData(result.data)
+								foodFeedAdapter = FoodFeedAdapter(foods) { foodId, liked ->
+									feedViewModel.updateFoodLikeState(foodId, liked)
+								}
 								binding.pbLoading.isVisible = false
-								binding.rvFeedFood.adapter = foodAdapter
-
+								binding.rvFeedFood.adapter = foodFeedAdapter
 								// setup Food Category Adapter
 								val categories = feedDataAdapter.getFeedFoodCategories(result.data)
 								binding.rvCategories.adapter =
 									FoodCategoryAdapter(categories) { filter ->
-										foodAdapter.update(
-											feedViewModel.onFilterChanged(filter, result)
+										val filtered = feedViewModel.onFilterChanged(filter, result)
+										foodFeedAdapter.update(
+											feedDataAdapter.getFeedFoodData(filtered)
 										)
 									}
 							}
@@ -121,6 +128,24 @@ class FoodFeedFragment : Fragment() {
 								.centerCrop()
 								.apply(RequestOptions.bitmapTransform(RoundedCorners(20)))
 								.into(binding.ivImageProfile)
+						}
+					}
+				}
+				//
+				// Observe food data liked state changes
+				launch {
+					feedViewModel.updateFoodLikedState.collect { result ->
+						if (result is UseCaseResult.Succeed) {
+							if (result.data.success) {
+								// NOOP
+								// This is expected and means that food item was updated correctly
+							} else if (::foodFeedAdapter.isInitialized) {
+								// Update liked state has failed then restore previous UI state
+								foodFeedAdapter.restoreFoodLikedState(
+									result.data.foodId,
+									result.data.liked
+								)
+							}
 						}
 					}
 				}

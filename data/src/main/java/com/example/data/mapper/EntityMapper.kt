@@ -21,22 +21,23 @@ class EntityMapper {
 			bio = data.bio ?: "",
 			city = data.city ?: "",
 			email = data.email ?: "",
-			likes = data.likes,
+			likes = data.likes ?: emptyList(),
 		)
 	}
 
-	private fun toFood(data: FoodDataModel): Food {
+	private fun toFood(data: FoodDataModel, user: UserDataModel): Food {
 		return Food(
 			id = data.id,
 			imageUrl = data.imageUrl,
 			name = data.name ?: "",
 			price = data.price?.div(100),
 			rating = data.rating ?: 0.0,
-			categories = data.categories
+			isLiked = user.likes?.contains(data.id) ?: false,
+			categories = data.categories,
 		)
 	}
 
-	fun toFoodList(data: List<FoodDataModel>): List<Food> {
-		return data.map { toFood(it) }.toList()
+	fun toFoodList(data: List<FoodDataModel>, user: UserDataModel): List<Food> {
+		return data.map { toFood(it, user) }.toList()
 	}
 }

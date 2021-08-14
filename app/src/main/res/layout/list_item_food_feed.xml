@@ -67,8 +67,8 @@
 
     <ImageView
         android:id="@+id/iv_favorite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:contentDescription="@string/general_content_description"
@@ -78,8 +78,8 @@
 
     <ImageView
         android:id="@+id/iv_ic_favorite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:contentDescription="@string/general_content_description"
         android:src="@drawable/ic_favourite_not_selected"
         app:layout_constraintBottom_toBottomOf="@id/iv_favorite"

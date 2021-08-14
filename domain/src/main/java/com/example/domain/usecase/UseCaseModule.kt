@@ -6,6 +6,7 @@ import com.example.domain.usecase.impl.GetFoodItemsUseCaseImpl
 import com.example.domain.usecase.impl.GetUserUseCaseImpl
 import com.example.domain.usecase.impl.IsUserLoggedInUseCaseImpl
 import com.example.domain.usecase.impl.LogInWithCredentialsUseCaseImpl
+import com.example.domain.usecase.impl.UpdateFoodLikedStateUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,4 +43,10 @@ object UseCaseModule {
 	fun providesUser(
 		userRepository: UserRepository,
 	): GetUserUseCase = GetUserUseCaseImpl(userRepository)
+
+	@Provides
+	@ViewModelScoped
+	fun providesUpdateFoodLikedState(
+		userRepository: UserRepository,
+	): UpdateFoodLikedStateUseCase = UpdateFoodLikedStateUseCaseImpl(userRepository)
 }

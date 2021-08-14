@@ -9,6 +9,6 @@ data class UserDataModel(
 	val bio: String? = null,
 	val city: String? = null,
 	val email: String? = null,
-	val likes: List<String> = emptyList(),
+	val likes: List<String>? = null,
 	val name: String? = null,
 )

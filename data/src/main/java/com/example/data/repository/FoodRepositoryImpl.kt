@@ -21,8 +21,9 @@ class FoodRepositoryImpl(
 	override fun getFoodItems(): Flow<DataResult<List<Food>>> {
 		return flow {
 			emit(DataResult.Loading)
-			val result = firebaseDataSource.getFoodItems()
-			val foodList = entityMapper.toFoodList(result)
+			val foods = firebaseDataSource.getFoodItems()
+			val user = firebaseDataSource.getUser()
+			val foodList = entityMapper.toFoodList(foods, user)
 			emit(DataResult.Success(foodList))
 		}.catch { e ->
 			Timber.e(e)

@@ -18,6 +18,7 @@ import timber.log.Timber
 
 private const val FIREBASE_KEY_USERS = "users"
 private const val FIREBASE_KEY_ITEMS = "items"
+private const val FIREBASE_KEY_LIKES = "likes"
 
 /**
  * Created by Pablo Reyes [devpab@gmail.com] on 11/08/21.
@@ -33,7 +34,7 @@ class FirebaseDataSourceImpl(
 		val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
 
 		if (result.user != null) {
-			return getUserProfile()
+			return getUser()
 		}
 
 		Timber.e("Error while trying to login with credentials using: $email")
@@ -41,7 +42,7 @@ class FirebaseDataSourceImpl(
 	}
 
 	@Throws(FirebaseAuthException::class)
-	override suspend fun getUserProfile(): UserDataModel {
+	override suspend fun getUser(): UserDataModel {
 		val firebaseUserId: String? = firebaseAuth.currentUser?.uid
 
 		if (firebaseUserId != null) {
@@ -50,7 +51,7 @@ class FirebaseDataSourceImpl(
 				.document(firebaseUserId)
 				.get().await()
 			firebaseUserProfile.toObject(UserDataModel::class.java)?.let {
-				return@getUserProfile it
+				return@getUser it
 			}
 		}
 
@@ -62,7 +63,7 @@ class FirebaseDataSourceImpl(
 		return callbackFlow {
 			val listener = FirebaseAuth.AuthStateListener { result ->
 				val isUserLoggedIn: Boolean = result.currentUser != null
-				Timber.d("Is User Logged In: $isUserLoggedIn")
+				Timber.d("[SessionState] Is user logged in? $isUserLoggedIn")
 				sendBlocking(isUserLoggedIn)
 			}
 			firebaseAuth.addAuthStateListener(listener)
@@ -78,5 +79,27 @@ class FirebaseDataSourceImpl(
 			items.add(value)
 		}
 		return items
+	}
+
+	override suspend fun updateFoodLikedState(foodId: String, isLiked: Boolean) {
+		val user = getUser()
+		val query = firestore.collection(FIREBASE_KEY_USERS).document(user.id)
+		val likes = user.likes?.toMutableList() ?: mutableListOf()
+
+		// Add/remove food liked state to the array
+		if (likes.contains(foodId)) {
+			likes.remove(foodId)
+		} else {
+			likes.add(foodId)
+		}
+		val updateBundle = user.run { copy(likes = likes) }
+
+		// Use set to create the "likes" field if it doesn't exist
+		// and if it exists then use "update" to add/remove liked foodId to the array
+		if (user.likes == null) {
+			query.set(updateBundle)
+		} else {
+			query.update(FIREBASE_KEY_LIKES, likes)
+		}
 	}
 }

@@ -1,6 +1,7 @@
 package com.example.domain.repository
 
 import com.example.domain.entity.Food
+import com.example.domain.entity.LikedTransaction
 import com.example.domain.entity.User
 import kotlinx.coroutines.flow.Flow
 
@@ -51,20 +52,8 @@ interface UserRepository {
 	): Flow<DataResult<User>>
 
 	/**
-	 * Add [Food] to favorites
-	 * @return Food with updated values
+	 * Add/remove [Food] to favorites liked array
+	 * @return true if success; false otherwise
 	 */
-	fun addFoodToFavorites(): Flow<DataResult<User>>
-
-	/**
-	 * Remove [Food] from favorites
-	 * @return Food with updated values
-	 */
-	fun removeFoodFromFavorites(): Flow<DataResult<User>>
-
-	/**
-	 * Is [Food] liked
-	 * @return true if food was liked by the user; false otherwise
-	 */
-	fun isFoodLiked(): Flow<DataResult<Boolean>>
+	fun updateFoodLikedState(foodId: String, isLiked: Boolean): Flow<DataResult<LikedTransaction>>
 }

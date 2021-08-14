@@ -4,13 +4,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.androidccforob.feed.FeedDataAdapter
 import com.example.domain.entity.Food
+import com.example.domain.entity.LikedTransaction
 import com.example.domain.usecase.GetFoodItemsUseCase
+import com.example.domain.usecase.UpdateFoodLikedStateUseCase
 import com.example.domain.usecase.UseCaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 /**
  * Created by Pablo Reyes [devpab@gmail.com] on 12/08/21.
@@ -19,6 +25,7 @@ import kotlinx.coroutines.flow.stateIn
 @HiltViewModel
 class FeedViewModel @Inject constructor(
 	getFoodItemsUseCase: GetFoodItemsUseCase,
+	private val updateFoodLikedStateUseCase: UpdateFoodLikedStateUseCase,
 ) : ViewModel() {
 
 	val allFoodItemsState = getFoodItemsUseCase.invoke().stateIn(
@@ -26,12 +33,26 @@ class FeedViewModel @Inject constructor(
 		SharingStarted.WhileSubscribed(500),
 		UseCaseResult.Loading
 	)
+	private val _updateFoodLikeState =
+		MutableStateFlow<UseCaseResult<LikedTransaction, Unit>>(UseCaseResult.Initial)
+	val updateFoodLikedState: StateFlow<UseCaseResult<LikedTransaction, Unit>> = _updateFoodLikeState
 
-	fun onFilterChanged(categoryId: String, food: UseCaseResult.Succeed<List<Food>>): List<Food> {
+	fun onFilterChanged(
+		categoryId: String,
+		food: UseCaseResult.Succeed<List<Food>>
+	): List<Food> {
 		return if (categoryId == FeedDataAdapter.FILTER_ALL) {
 			food.data
 		} else {
 			food.data.filter { it.categories.contains(categoryId) }
+		}
+	}
+
+	fun updateFoodLikeState(foodId: String, liked: Boolean) {
+		viewModelScope.launch {
+			updateFoodLikedStateUseCase.invoke(foodId, liked).collect { result ->
+				_updateFoodLikeState.value = result
+			}
 		}
 	}
 }
