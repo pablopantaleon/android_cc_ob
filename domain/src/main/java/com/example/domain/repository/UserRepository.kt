@@ -40,13 +40,13 @@ interface UserRepository {
 	 * Update user information
 	 * Note: None of the parameters are required
 	 *
-	 * @param username: (Optional) Value associated to the user that identifies it
+	 * @param name: (Optional) Value associated to the user that identifies it
 	 * @param city: (Optional) City where the user has born
 	 * @param bio: (Optional) Short description of the user's biography
 	 * @return updated User
 	 */
 	fun updateUser(
-		username: String? = null,
+		name: String? = null,
 		city: String? = null,
 		bio: String? = null,
 	): Flow<DataResult<User>>

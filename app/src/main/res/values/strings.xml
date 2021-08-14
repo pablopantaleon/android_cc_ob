@@ -18,6 +18,8 @@
     <string name="edit_your_profile_name">Your name</string>
     <string name="edit_your_profile_city">Your city</string>
     <string name="edit_your_profile_bio">A little about your self…</string>
+    <string name="edit_your_profile_success">Your profile data has been updated! 🙌</string>
+    <string name="edit_your_profile_error">Error while trying to update your data 😔, please try again</string>
     <string name="edit_your_profile_save_profile">Save Profile</string>
     <string name="edit_your_profile_sign_out">Sign Out</string>
 

@@ -59,6 +59,15 @@ class FirebaseDataSourceImpl(
 		throw FirebaseAuthException("-1", "User not found")
 	}
 
+	@Throws(FirebaseAuthException::class)
+	override suspend fun updateUser(name: String?, city: String?, bio: String?): UserDataModel {
+		val user = getUser()
+		val updateBundle = user.run { copy(name = name ?: "", city = city ?: "", bio = bio ?: "") }
+		val query = firestore.collection(FIREBASE_KEY_USERS).document(user.id)
+		query.set(updateBundle)
+		return getUser()
+	}
+
 	override suspend fun logOut() = firebaseAuth.signOut()
 
 	override suspend fun observeUserLoggedInState(): Flow<Boolean> {
@@ -87,7 +96,6 @@ class FirebaseDataSourceImpl(
 		val user = getUser()
 		val query = firestore.collection(FIREBASE_KEY_USERS).document(user.id)
 		val likes = user.likes?.toMutableList() ?: mutableListOf()
-
 		// Add/remove food liked state to the array
 		if (likes.contains(foodId)) {
 			likes.remove(foodId)
@@ -95,7 +103,6 @@ class FirebaseDataSourceImpl(
 			likes.add(foodId)
 		}
 		val updateBundle = user.run { copy(likes = likes) }
-
 		// Use set to create the "likes" field if it doesn't exist
 		// and if it exists then use "update" to add/remove liked foodId to the array
 		if (user.likes == null) {

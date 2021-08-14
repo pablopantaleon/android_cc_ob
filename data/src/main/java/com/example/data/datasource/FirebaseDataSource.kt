@@ -29,6 +29,23 @@ interface FirebaseDataSource {
 	suspend fun getUser(): UserDataModel
 
 	/**
+	 * Update user data
+	 * Note: None of the parameters are required
+	 *
+	 * @param username: (Optional) Value associated to the user that identifies it
+	 * @param city: (Optional) City where the user has born
+	 * @param bio: (Optional) Short description of the user's biography
+	 * @return [UserDataModel] that represents the user
+	 * @throws [FirebaseAuthException] if user not found (i.e. user is not logged in)
+	 */
+	@Throws(FirebaseAuthException::class)
+	suspend fun updateUser(
+		name: String? = null,
+		city: String? = null,
+		bio: String? = null,
+	): UserDataModel
+
+	/**
 	 * Kill current session user
 	 */
 	suspend fun logOut()

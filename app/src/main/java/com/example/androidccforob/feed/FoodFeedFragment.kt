@@ -20,6 +20,7 @@ import com.example.androidccforob.profile.ProfileBottomSheetFragment
 import com.example.androidccforob.viewmodel.FeedViewModel
 import com.example.androidccforob.viewmodel.UserViewModel
 import com.example.domain.usecase.UseCaseResult
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -148,7 +149,7 @@ class FoodFeedFragment : Fragment() {
 								SnackbarFactory.createErrorMessage(
 									binding.root,
 									getString(R.string.default_error)
-								)
+								).show()
 							}
 						}
 					}

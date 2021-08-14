@@ -56,11 +56,18 @@ class UserRepositoryImpl(
 	}
 
 	override fun updateUser(
-		username: String?,
+		name: String?,
 		city: String?,
 		bio: String?
 	): Flow<DataResult<User>> {
-		TODO("Not yet implemented")
+		return flow {
+			emit(DataResult.Loading)
+			val result = firebaseDataSource.updateUser(name, city, bio)
+			emit(DataResult.Success(entityMapper.toUser(result)))
+		}.catch { e ->
+			Timber.e(e)
+			emit(DataResult.Failed(e.message ?: ""))
+		}
 	}
 
 	override fun updateFoodLikedState(

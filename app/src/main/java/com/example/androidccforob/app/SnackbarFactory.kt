@@ -29,6 +29,22 @@ object SnackbarFactory {
 			setTextColor(textColor)
 		}
 	}
+
+	/**
+	 * Create [Snackbar] for success message
+	 * @param view The view to find a parent from.  This view is also used to find the anchor view
+	 * when calling {@link Snackbar#setAnchorView(int)}.
+	 * @param message The text to show. Can be formatted text.
+	 */
+	fun createSuccessMessage(view: View, message: String): Snackbar {
+		val color = ContextCompat.getColor(view.context, R.color.primary_color)
+		val textColor = ContextCompat.getColor(view.context, android.R.color.white)
+
+		return Snackbar.make(view, message, Snackbar.LENGTH_LONG).apply {
+			setBackgroundTint(color)
+			setTextColor(textColor)
+		}
+	}
 }
 
 @ColorInt

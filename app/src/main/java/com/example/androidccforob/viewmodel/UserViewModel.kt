@@ -9,6 +9,7 @@ import com.example.domain.usecase.GetUserUseCase
 import com.example.domain.usecase.IsUserLoggedInUseCase
 import com.example.domain.usecase.LogInWithCredentialsUseCase
 import com.example.domain.usecase.LogOutUseCase
+import com.example.domain.usecase.UpdateUserUseCase
 import com.example.domain.usecase.UseCaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -30,6 +31,7 @@ class UserViewModel @Inject constructor(
 	getUserUseCase: GetUserUseCase,
 	private val logOutUseCase: LogOutUseCase,
 	private val logInWithCredentialsUseCase: LogInWithCredentialsUseCase,
+	private val updateUserUseCase: UpdateUserUseCase,
 	private val dataValidator: DataValidator,
 ) : ViewModel() {
 
@@ -57,6 +59,9 @@ class UserViewModel @Inject constructor(
 	val logInState: StateFlow<UseCaseResult<User, Exception>> = _logInState
 	private val _logInFormValidationState = MutableStateFlow(LogInFormState())
 	val logInFormValidationState: StateFlow<LogInFormState> = _logInFormValidationState
+	private val _updateUserState =
+		MutableStateFlow<UseCaseResult<User, Unit>>(UseCaseResult.Initial)
+	val updateUserState: StateFlow<UseCaseResult<User, Unit>> = _updateUserState
 
 	/**
 	 * Log In using credentials. If success [isLoggedInState] is updated
@@ -83,6 +88,14 @@ class UserViewModel @Inject constructor(
 			isPasswordValid = !dataValidator.isPasswordValid(password),
 			requiredFieldsFilled = email.isNotBlank() && password.isNotBlank(),
 		)
+	}
+
+	fun updateUser(name: String?, city: String?, bio: String) {
+		viewModelScope.launch {
+			updateUserUseCase.invoke(name, city, bio).collect { result ->
+				_updateUserState.value = result
+			}
+		}
 	}
 
 	fun logOut() {
