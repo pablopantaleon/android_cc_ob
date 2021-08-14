@@ -31,7 +31,9 @@ class UserRepositoryImpl(
 	}
 
 	override fun logOut(): Flow<DataResult<Unit>> {
-		TODO("Not yet implemented")
+		return flow {
+			firebaseDataSource.logOut()
+		}
 	}
 
 	override fun isUserLoggedIn(): Flow<DataResult<Boolean>> {

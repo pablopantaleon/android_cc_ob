@@ -104,7 +104,6 @@ class FoodFeedFragment : Fragment() {
 								}
 								binding.pbLoading.isVisible = false
 								binding.rvFeedFood.adapter = foodFeedAdapter
-
 								// setup Food Category Adapter
 								val categories = feedDataAdapter.getFeedFoodCategories(result.data)
 								binding.rvCategories.adapter =
@@ -145,6 +144,10 @@ class FoodFeedFragment : Fragment() {
 								foodFeedAdapter.restoreFoodLikedState(
 									result.data.foodId,
 									result.data.liked
+								)
+								SnackbarFactory.createErrorMessage(
+									binding.root,
+									getString(R.string.default_error)
 								)
 							}
 						}

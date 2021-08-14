@@ -6,6 +6,7 @@ import com.example.domain.usecase.impl.GetFoodItemsUseCaseImpl
 import com.example.domain.usecase.impl.GetUserUseCaseImpl
 import com.example.domain.usecase.impl.IsUserLoggedInUseCaseImpl
 import com.example.domain.usecase.impl.LogInWithCredentialsUseCaseImpl
+import com.example.domain.usecase.impl.LogOutUseCaseImpl
 import com.example.domain.usecase.impl.UpdateFoodLikedStateUseCaseImpl
 import dagger.Module
 import dagger.Provides
@@ -31,6 +32,12 @@ object UseCaseModule {
 	fun providesIsUserLoggedIn(
 		userRepository: UserRepository,
 	): IsUserLoggedInUseCase = IsUserLoggedInUseCaseImpl(userRepository)
+
+	@Provides
+	@ViewModelScoped
+	fun providesLogOut(
+		userRepository: UserRepository,
+	): LogOutUseCase = LogOutUseCaseImpl(userRepository)
 
 	@Provides
 	@ViewModelScoped

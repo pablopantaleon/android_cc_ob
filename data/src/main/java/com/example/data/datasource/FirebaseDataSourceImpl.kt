@@ -59,6 +59,8 @@ class FirebaseDataSourceImpl(
 		throw FirebaseAuthException("-1", "User not found")
 	}
 
+	override suspend fun logOut() = firebaseAuth.signOut()
+
 	override suspend fun observeUserLoggedInState(): Flow<Boolean> {
 		return callbackFlow {
 			val listener = FirebaseAuth.AuthStateListener { result ->

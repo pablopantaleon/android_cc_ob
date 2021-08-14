@@ -29,6 +29,11 @@ interface FirebaseDataSource {
 	suspend fun getUser(): UserDataModel
 
 	/**
+	 * Kill current session user
+	 */
+	suspend fun logOut()
+
+	/**
 	 * Observe user session state
 	 * @return true if user is logged in; false otherwise
 	 */

@@ -40,6 +40,9 @@ class ProfileBottomSheetFragment : BottomSheetDialogFragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		observeLiveEvents()
+		binding.signOut.setOnClickListener {
+			userViewModel.logOut()
+		}
 	}
 
 	/**

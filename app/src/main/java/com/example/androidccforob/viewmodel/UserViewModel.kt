@@ -3,11 +3,12 @@ package com.example.androidccforob.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.androidccforob.app.DataValidator
-import com.example.androidccforob.login.LoginFormState
+import com.example.androidccforob.login.LogInFormState
 import com.example.domain.entity.User
 import com.example.domain.usecase.GetUserUseCase
 import com.example.domain.usecase.IsUserLoggedInUseCase
 import com.example.domain.usecase.LogInWithCredentialsUseCase
+import com.example.domain.usecase.LogOutUseCase
 import com.example.domain.usecase.UseCaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -27,8 +28,9 @@ import kotlinx.coroutines.launch
 class UserViewModel @Inject constructor(
 	isUserLoggedInUseCase: IsUserLoggedInUseCase,
 	getUserUseCase: GetUserUseCase,
-	private val dataValidator: DataValidator,
+	private val logOutUseCase: LogOutUseCase,
 	private val logInWithCredentialsUseCase: LogInWithCredentialsUseCase,
+	private val dataValidator: DataValidator,
 ) : ViewModel() {
 
 	/**
@@ -53,8 +55,8 @@ class UserViewModel @Inject constructor(
 	private val _logInState =
 		MutableStateFlow<UseCaseResult<User, Exception>>(UseCaseResult.Initial)
 	val logInState: StateFlow<UseCaseResult<User, Exception>> = _logInState
-	private val _logInFormValidationState = MutableStateFlow(LoginFormState())
-	val logInFormValidationState: StateFlow<LoginFormState> = _logInFormValidationState
+	private val _logInFormValidationState = MutableStateFlow(LogInFormState())
+	val logInFormValidationState: StateFlow<LogInFormState> = _logInFormValidationState
 
 	/**
 	 * Log In using credentials. If success [isLoggedInState] is updated
@@ -76,12 +78,16 @@ class UserViewModel @Inject constructor(
 	 * @param password
 	 */
 	fun onLogInDataChanged(email: String, password: String) {
-		val valid =
-			!dataValidator.isEmailValid(email) && !dataValidator.isPasswordValid(password)
-		_logInFormValidationState.value = LoginFormState(
-			usernameError = !dataValidator.isEmailValid(email),
-			passwordError = !dataValidator.isPasswordValid(password),
-			hasValidData = valid
+		_logInFormValidationState.value = LogInFormState(
+			isEmailAddressValid = !dataValidator.isEmailValid(email),
+			isPasswordValid = !dataValidator.isPasswordValid(password),
+			requiredFieldsFilled = email.isNotBlank() && password.isNotBlank(),
 		)
+	}
+
+	fun logOut() {
+		viewModelScope.launch {
+			logOutUseCase.invoke().collect { }
+		}
 	}
 }

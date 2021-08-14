@@ -82,19 +82,16 @@ class LogInFragment : Fragment() {
 				launch {
 					userViewModel.logInFormValidationState.collect { result ->
 						when {
-							result.usernameError -> {
+							!result.requiredFieldsFilled -> {
+								binding.btnLogin.isEnabled = false
+							}
+							result.isEmailAddressValid -> {
 								binding.edUsername.error = getString(R.string.invalid_username)
-								binding.btnLogin.isEnabled = false
-							}
-							result.passwordError -> {
-								binding.edPassword.error = getString(R.string.invalid_password)
-								binding.btnLogin.isEnabled = false
-							}
-							result.hasValidData != null -> {
 								binding.btnLogin.isEnabled = true
 							}
-							else -> {
-								binding.btnLogin.isEnabled = false
+							result.isPasswordValid -> {
+								binding.edPassword.error = getString(R.string.invalid_password)
+								binding.btnLogin.isEnabled = true
 							}
 						}
 					}

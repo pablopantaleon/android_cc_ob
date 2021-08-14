@@ -3,14 +3,14 @@
 
     <!-- General -->
     <string name="general_content_description">Image</string>
-    <string name="default_error">Unable to process your request try again</string>
+    <string name="default_error">Something went wrong, please try again</string>
 
     <!-- Log In -->
     <string name="prompt_email">Your Email</string>
     <string name="prompt_password">********</string>
     <string name="action_sign_in">Sign In</string>
-    <string name="invalid_username">Invalid credentials</string>
-    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="invalid_username">Invalid email address</string>
+    <string name="invalid_password">Password must be > 5 characters</string>
     <string name="sign_in_to_your_account">Sign in to your account below 👇</string>
 
     <!-- Profile -->
