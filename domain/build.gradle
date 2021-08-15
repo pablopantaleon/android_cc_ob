@@ -14,7 +14,6 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -39,6 +38,13 @@ dependencies {
     // hilt
     implementation rootProject.ext.deps.hilt
     kapt rootProject.ext.deps.hiltAnnotations
+
+    // testing
+    testImplementation rootProject.ext.deps.jUnit
+    testImplementation rootProject.ext.deps.truth
+    testImplementation rootProject.ext.deps.turbine
+    testImplementation rootProject.ext.deps.mockk
+    testImplementation rootProject.ext.deps.coroutinesTest
 
     // internal
     api project(path: ':core')

@@ -3,12 +3,14 @@ package com.example.domain.repository
 import com.example.domain.entity.Food
 import com.example.domain.entity.LikedTransaction
 import com.example.domain.entity.User
+import com.example.core.DataResult
+import com.example.core.Repository
 import kotlinx.coroutines.flow.Flow
 
 /**
  * Created by Pablo Reyes [devpab@gmail.com] on 9/08/21.
  */
-interface UserRepository {
+interface UserRepository : Repository {
 
 	/**
 	 * Log In using the provided credentials

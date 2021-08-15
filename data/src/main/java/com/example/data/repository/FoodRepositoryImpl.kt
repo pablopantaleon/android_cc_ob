@@ -1,9 +1,9 @@
 package com.example.data.repository
 
+import com.example.core.DataResult
 import com.example.data.datasource.FirebaseDataSource
 import com.example.data.mapper.EntityMapper
 import com.example.domain.entity.Food
-import com.example.domain.repository.DataResult
 import com.example.domain.repository.FoodRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -27,7 +27,7 @@ class FoodRepositoryImpl(
 			emit(DataResult.Success(foodList))
 		}.catch { e ->
 			Timber.e(e)
-			emit(DataResult.Failed("Unkown Error"))
+			emit(DataResult.Failed(Throwable("Unkown Error")))
 		}
 	}
 }

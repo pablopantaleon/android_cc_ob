@@ -3,11 +3,11 @@ package com.example.androidccforob.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.androidccforob.feed.FeedDataAdapter
+import com.example.core.UseCaseResult
 import com.example.domain.entity.Food
 import com.example.domain.entity.LikedTransaction
 import com.example.domain.usecase.GetFoodItemsUseCase
 import com.example.domain.usecase.UpdateFoodLikedStateUseCase
-import com.example.domain.usecase.UseCaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -34,12 +34,13 @@ class FeedViewModel @Inject constructor(
 		UseCaseResult.Loading
 	)
 	private val _updateFoodLikeState =
-		MutableStateFlow<UseCaseResult<LikedTransaction, Unit>>(UseCaseResult.Initial)
-	val updateFoodLikedState: StateFlow<UseCaseResult<LikedTransaction, Unit>> = _updateFoodLikeState
+		MutableStateFlow<UseCaseResult<LikedTransaction, Throwable>>(UseCaseResult.Initial)
+	val updateFoodLikedState: StateFlow<UseCaseResult<LikedTransaction, Throwable>> =
+		_updateFoodLikeState
 
 	fun onFilterChanged(
 		categoryId: String,
-		food: UseCaseResult.Succeed<List<Food>>
+		food: UseCaseResult.Success<List<Food>>
 	): List<String> {
 		return if (categoryId == FeedDataAdapter.FILTER_ALL) {
 			food.data.map { it.id }

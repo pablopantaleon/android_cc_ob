@@ -63,7 +63,12 @@ ext.deps = [
         // testing
         "jUnit"                                : 'junit:junit:4.+',
         "androidJUnit"                         : 'androidx.test.ext:junit:1.1.3',
-        "mockito"                              : 'org.mockito:mockito-core:3.+',
+        "mockk"                                : 'io.mockk:mockk:1.12.0',
+        "mockkAndroid"                         : 'io.mockk:mockk-android:',
+        "truth"                                : 'com.google.truth:truth:1.1.3',
+        "hiltTest"                             : 'com.google.dagger:hilt-android-compiler:2.38.1',
+        "turbine"                              : 'app.cash.turbine:turbine:0.6.0',
+        "coroutinesTest"                       : 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.1',
 
         // hilt
         "hilt"                                 : "com.google.dagger:hilt-android:2.38.1",

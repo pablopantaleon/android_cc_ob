@@ -3,44 +3,48 @@ package com.example.domain.usecase
 import app.cash.turbine.test
 import com.example.core.DataResult
 import com.example.core.UseCaseResult
-import com.example.domain.entity.Food
-import com.example.domain.repository.FoodRepository
-import com.example.domain.usecase.impl.GetFoodItemsUseCaseImpl
+import com.example.domain.entity.User
+import com.example.domain.repository.UserRepository
+import com.example.domain.usecase.impl.LogInWithCredentialsUseCaseImpl
 import io.mockk.every
 import io.mockk.mockk
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
 /**
- * Created by Pablo Reyes [devpab@gmail.com] on 9/08/21.
+ * Created by Pablo Reyes [devpab@gmail.com] on 14/08/21.
  */
 @ExperimentalTime
-class GetFoodItemsUseCaseTest {
+class LogInWithCredentialsUseCaseTest {
 
-	private lateinit var useCase: GetFoodItemsUseCase
+	private lateinit var useCase: LogInWithCredentialsUseCase
 	private val error = Throwable()
-	private val repository: FoodRepository = mockk()
+	private val email = "example@go.com"
+	private val password = "password"
+	private val user: User = mockk()
+	private val repository: UserRepository = mockk()
 	private val states = flow {
 		emit(DataResult.Loading)
-		emit(DataResult.Success(emptyList<Food>()))
+		emit(DataResult.Success(user))
 		emit(DataResult.Failed(error))
 	}
 
 	@Before
 	fun setUp() {
-		every { repository.getFoodItems() } returns states
-		useCase = GetFoodItemsUseCaseImpl(repository)
+		every { repository.logInWithCredentials(email, password) } returns states
+		useCase = LogInWithCredentialsUseCaseImpl(repository)
 	}
 
 	@Test
 	fun `should transform DataResult to UseCaseResult`() = runBlocking {
-		useCase.invoke().test {
+		useCase.invoke(email, password).test {
 			assertEquals(UseCaseResult.Loading, awaitItem())
-			assertEquals(UseCaseResult.Success(emptyList<Food>()), awaitItem())
+			assertEquals(UseCaseResult.Success(user), awaitItem())
 			assertEquals(UseCaseResult.Failed(error), awaitItem())
 			awaitComplete()
 		}

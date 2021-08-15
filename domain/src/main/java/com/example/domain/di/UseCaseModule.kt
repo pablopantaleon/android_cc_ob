@@ -1,7 +1,14 @@
-package com.example.domain.usecase
+package com.example.domain.di
 
 import com.example.domain.repository.FoodRepository
 import com.example.domain.repository.UserRepository
+import com.example.domain.usecase.GetFoodItemsUseCase
+import com.example.domain.usecase.GetUserUseCase
+import com.example.domain.usecase.IsUserLoggedInUseCase
+import com.example.domain.usecase.LogInWithCredentialsUseCase
+import com.example.domain.usecase.LogOutUseCase
+import com.example.domain.usecase.UpdateFoodLikedStateUseCase
+import com.example.domain.usecase.UpdateUserUseCase
 import com.example.domain.usecase.impl.GetFoodItemsUseCaseImpl
 import com.example.domain.usecase.impl.GetUserUseCaseImpl
 import com.example.domain.usecase.impl.IsUserLoggedInUseCaseImpl
@@ -20,7 +27,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
  */
 @Module
 @InstallIn(ViewModelComponent::class)
-object UseCaseModule {
+internal object UseCaseModule {
 
 	@Provides
 	@ViewModelScoped

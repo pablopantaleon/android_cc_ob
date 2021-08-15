@@ -17,7 +17,7 @@ import com.example.androidccforob.R
 import com.example.androidccforob.app.SnackbarFactory
 import com.example.androidccforob.databinding.FragmentProfileBottomSheetBinding
 import com.example.androidccforob.viewmodel.UserViewModel
-import com.example.domain.usecase.UseCaseResult
+import com.example.core.UseCaseResult
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -84,7 +84,7 @@ class ProfileBottomSheetFragment : BottomSheetDialogFragment() {
 				// observe auth state changes
 				launch {
 					userViewModel.userState.collect { result ->
-						if (result is UseCaseResult.Succeed) {
+						if (result is UseCaseResult.Success) {
 							Glide.with(binding.ivImageProfile)
 								.load(result.data.avatarUrl)
 								.centerCrop()
@@ -101,7 +101,7 @@ class ProfileBottomSheetFragment : BottomSheetDialogFragment() {
 				launch {
 					userViewModel.updateUserState.collect { result ->
 						when (result) {
-							is UseCaseResult.Succeed -> {
+							is UseCaseResult.Success -> {
 								handleUiLoadingState(false)
 								SnackbarFactory.createSuccessMessage(
 									binding.root,

@@ -21,7 +21,7 @@ import com.example.androidccforob.databinding.FragmentFoodFeedBinding
 import com.example.androidccforob.profile.ProfileBottomSheetFragment
 import com.example.androidccforob.viewmodel.FeedViewModel
 import com.example.androidccforob.viewmodel.UserViewModel
-import com.example.domain.usecase.UseCaseResult
+import com.example.core.UseCaseResult
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -78,7 +78,7 @@ class FoodFeedFragment : Fragment() {
 				launch {
 					userViewModel.isLoggedInState.collect { result ->
 						// user is not logged in
-						if (result is UseCaseResult.Succeed && !result.data || result is UseCaseResult.Failed) {
+						if (result is UseCaseResult.Success && !result.data || result is UseCaseResult.Failed) {
 							val navOptions = NavOptions.Builder()
 							navOptions.setPopUpTo(R.id.splashFragment, true)
 							navOptions.setLaunchSingleTop(true)
@@ -105,7 +105,7 @@ class FoodFeedFragment : Fragment() {
 							is UseCaseResult.Loading -> {
 								binding.pbLoading.isVisible = true
 							}
-							is UseCaseResult.Succeed -> {
+							is UseCaseResult.Success -> {
 								// setup Food Adapter
 								val foods = feedDataAdapter.getFeedFoodData(result.data)
 								foodFeedAdapter = FoodFeedAdapter(foods) { foodId, liked ->
@@ -131,7 +131,7 @@ class FoodFeedFragment : Fragment() {
 				// observe auth state changes
 				launch {
 					userViewModel.userState.collect { result ->
-						if (result is UseCaseResult.Succeed) {
+						if (result is UseCaseResult.Success) {
 							Glide.with(binding.ivImageProfile)
 								.load(result.data.avatarUrl)
 								.centerCrop()
@@ -144,7 +144,7 @@ class FoodFeedFragment : Fragment() {
 				// Observe food data liked state changes
 				launch {
 					feedViewModel.updateFoodLikedState.collect { result ->
-						if (result is UseCaseResult.Succeed) {
+						if (result is UseCaseResult.Success) {
 							if (result.data.success) {
 								// NOOP
 								// This is expected and means that food item was updated correctly

@@ -1,10 +1,10 @@
 package com.example.data.repository
 
+import com.example.core.DataResult
 import com.example.data.datasource.FirebaseDataSource
 import com.example.data.mapper.EntityMapper
 import com.example.domain.entity.LikedTransaction
 import com.example.domain.entity.User
-import com.example.domain.repository.DataResult
 import com.example.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -25,8 +25,8 @@ class UserRepositoryImpl(
 			emit(DataResult.Loading)
 			val userDataModel = firebaseDataSource.logInWithCredentials(email, password)
 			emit(DataResult.Success(entityMapper.toUser(userDataModel)))
-		}.catch { error ->
-			emit(DataResult.Failed(error.message ?: ""))
+		}.catch { e ->
+			emit(DataResult.Failed(e))
 		}
 	}
 
@@ -51,7 +51,7 @@ class UserRepositoryImpl(
 			emit(DataResult.Success(entityMapper.toUser(result)))
 		}.catch { e ->
 			Timber.e(e)
-			emit(DataResult.Failed(e.message ?: ""))
+			emit(DataResult.Failed(e))
 		}
 	}
 
@@ -66,7 +66,7 @@ class UserRepositoryImpl(
 			emit(DataResult.Success(entityMapper.toUser(result)))
 		}.catch { e ->
 			Timber.e(e)
-			emit(DataResult.Failed(e.message ?: ""))
+			emit(DataResult.Failed(e))
 		}
 	}
 

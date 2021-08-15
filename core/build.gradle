@@ -36,8 +36,4 @@ dependencies {
 
     // logging
     api rootProject.ext.deps.timber
-
-    // testing
-    api rootProject.ext.deps.jUnit
-    api rootProject.ext.deps.mockito
 }

@@ -18,7 +18,7 @@ import com.example.androidccforob.R
 import com.example.androidccforob.app.SnackbarFactory
 import com.example.androidccforob.databinding.FragmentLogInBinding
 import com.example.androidccforob.viewmodel.UserViewModel
-import com.example.domain.usecase.UseCaseResult
+import com.example.core.UseCaseResult
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -51,7 +51,7 @@ class LogInFragment : Fragment() {
 				launch {
 					userViewModel.isLoggedInState.collect { result ->
 						// user is logged in
-						if (result is UseCaseResult.Succeed && result.data) {
+						if (result is UseCaseResult.Success && result.data) {
 							findNavController().navigate(R.id.action_logInFragment_to_foodFeedFragment)
 						}
 					}

@@ -1,4 +1,4 @@
-package com.example.domain.repository
+package com.example.core
 
 /**
  * Created by Pablo Reyes [devpab@gmail.com] on 9/08/21.
@@ -6,5 +6,5 @@ package com.example.domain.repository
 sealed class DataResult<out T> {
 	object Loading : DataResult<Nothing>()
 	data class Success<out T>(val data: T) : DataResult<T>()
-	data class Failed(val message: String) : DataResult<Nothing>()
+	data class Failed(val error: Throwable) : DataResult<Nothing>()
 }

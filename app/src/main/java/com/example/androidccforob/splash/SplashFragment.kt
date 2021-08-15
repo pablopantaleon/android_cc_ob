@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.androidccforob.R
 import com.example.androidccforob.viewmodel.UserViewModel
-import com.example.domain.usecase.UseCaseResult
+import com.example.core.UseCaseResult
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -42,7 +42,7 @@ class SplashFragment : Fragment() {
 						is UseCaseResult.Loading -> {
 							/* NOOP */
 						}
-						is UseCaseResult.Succeed -> {
+						is UseCaseResult.Success -> {
 							if (result.data) { // is logged in
 								findNavController().navigate(R.id.action_splashFragment_to_foodFeedFragment)
 							} else {
