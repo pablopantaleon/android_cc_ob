@@ -49,6 +49,12 @@ dependencies {
     implementation rootProject.ext.deps.hilt
     kapt rootProject.ext.deps.hiltAnnotations
 
+    // testing
+    testImplementation rootProject.ext.deps.jUnit
+    testImplementation rootProject.ext.deps.truth
+    testImplementation rootProject.ext.deps.turbine
+    testImplementation rootProject.ext.deps.mockk
+
     // internal
     api project(path: ':domain')
 }
