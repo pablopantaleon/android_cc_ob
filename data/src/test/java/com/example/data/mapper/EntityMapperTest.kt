@@ -26,6 +26,7 @@ class EntityMapperTest {
 
 	@Test
 	fun `when receive a UserDataModel should return User`() {
+		// arrange
 		val data = UserDataModel(
 			id = "1111",
 			avatarUrl = "https://example.com/image.jpg",
@@ -44,12 +45,15 @@ class EntityMapperTest {
 			likes = emptyList(),
 			name = data.name ?: "",
 		)
+		// act
 		val result = entityMapper.toUser(data)
+		// assert
 		assertThat(result, `is`(user))
 	}
 
 	@Test
 	fun `when receive a FoodDataModel should return Food`() {
+		// arrange
 		every { userDataModel.likes } returns emptyList()
 		val data = FoodDataModel(
 			id = "1111",
@@ -71,7 +75,9 @@ class EntityMapperTest {
 				categories = data.categories,
 			)
 		)
+		// act
 		val result = entityMapper.toFoodList(foodData, userDataModel)
+		// assert
 		assertThat(result, `is`(foods))
 	}
 }

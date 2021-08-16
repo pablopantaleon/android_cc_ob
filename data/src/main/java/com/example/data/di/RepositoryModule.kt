@@ -1,7 +1,9 @@
-package com.example.data.repository
+package com.example.data.di
 
 import com.example.data.datasource.FirebaseDataSource
 import com.example.data.mapper.EntityMapper
+import com.example.data.repository.FoodRepositoryImpl
+import com.example.data.repository.UserRepositoryImpl
 import com.example.domain.repository.FoodRepository
 import com.example.domain.repository.UserRepository
 import dagger.Module
