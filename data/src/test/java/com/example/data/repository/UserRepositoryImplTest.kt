@@ -49,10 +49,12 @@ class UserRepositoryImplTest {
 
 	@Test
 	fun `when login with credentials should return a User`() = runBlocking {
+		// arrange
 		val email = "example@go.com"
 		val password = "password"
 		coEvery { dataSource.logInWithCredentials(email, password) } returns userDataModel
 		every { entityMapper.toUser(userDataModel) } returns user
+		// act & assert
 		repository.logInWithCredentials(email, password).test {
 			assertEquals(DataResult.Loading, awaitItem())
 			assertEquals(DataResult.Success(user), awaitItem())
@@ -63,9 +65,11 @@ class UserRepositoryImplTest {
 	@Test
 	fun `when login with credentials fails should throw an exception and return Failed state`() =
 		runBlocking {
+			// arrange
 			val email = "example@go.com"
 			val password = "password"
 			coEvery { dataSource.logInWithCredentials(email, password) } throws error
+			// act & assert
 			repository.logInWithCredentials(email, password).test {
 				assertEquals(DataResult.Loading, awaitItem())
 				assertEquals(DataResult.Failed(error), awaitItem())
@@ -75,7 +79,9 @@ class UserRepositoryImplTest {
 
 	@Test
 	fun `when is user logged in, should return true`() = runBlocking {
+		// arrange
 		coEvery { dataSource.observeUserLoggedInState() } returns flowOf(true)
+		// act & assert
 		repository.isUserLoggedIn().test {
 			assertEquals(DataResult.Success(true), awaitItem())
 			awaitComplete()
@@ -84,8 +90,10 @@ class UserRepositoryImplTest {
 
 	@Test
 	fun `when get user, should user data model`() = runBlocking {
+		// arrange
 		coEvery { dataSource.getUser() } returns userDataModel
 		every { entityMapper.toUser(userDataModel) } returns user
+		// act & assert
 		repository.getUser().test {
 			assertEquals(DataResult.Loading, awaitItem())
 			assertEquals(DataResult.Success(user), awaitItem())
@@ -95,7 +103,9 @@ class UserRepositoryImplTest {
 
 	@Test
 	fun `when get user fails, should throw an exception and return Failed state`() = runBlocking {
+		// arrange
 		coEvery { dataSource.getUser() } throws error
+		// act & assert
 		repository.getUser().test {
 			assertEquals(DataResult.Loading, awaitItem())
 			assertEquals(DataResult.Failed(error), awaitItem())
@@ -105,8 +115,10 @@ class UserRepositoryImplTest {
 
 	@Test
 	fun `when update user, should user data model`() = runBlocking {
+		// arrange
 		coEvery { dataSource.updateUser() } returns userDataModel
 		every { entityMapper.toUser(userDataModel) } returns user
+		// act & assert
 		repository.updateUser().test {
 			assertEquals(DataResult.Loading, awaitItem())
 			assertEquals(DataResult.Success(user), awaitItem())
@@ -116,7 +128,9 @@ class UserRepositoryImplTest {
 
 	@Test
 	fun `when update fails, should throw an exception and return Failed state`() = runBlocking {
+		// arrange
 		coEvery { dataSource.updateUser() } throws error
+		// act & assert
 		repository.updateUser().test {
 			assertEquals(DataResult.Loading, awaitItem())
 			assertEquals(DataResult.Failed(error), awaitItem())
@@ -126,10 +140,12 @@ class UserRepositoryImplTest {
 
 	@Test
 	fun `when update food liked state, should return liked transaction`() = runBlocking {
+		// arrange
 		val foodId = "1111"
 		val liked = true
 		val likedTransaction = LikedTransaction(foodId, liked, true)
 		coEvery { dataSource.updateFoodLikedState(foodId, liked) } returns Unit
+		// act & assert
 		repository.updateFoodLikedState(foodId, liked).test {
 			assertEquals(DataResult.Loading, awaitItem())
 			assertEquals(DataResult.Success(likedTransaction), awaitItem())
@@ -140,9 +156,11 @@ class UserRepositoryImplTest {
 	@Test
 	fun `when update food liked state fails, should throw an exception and return Failed state`() =
 		runBlocking {
+			// arrange
 			val foodId = "1111"
 			val liked = true
 			coEvery { dataSource.updateFoodLikedState(foodId, liked) } throws error
+			// act & assert
 			repository.updateFoodLikedState(foodId, liked).test {
 				assertEquals(DataResult.Loading, awaitItem())
 				assertEquals(

@@ -25,6 +25,7 @@
 
     <!-- Food Feed -->
     <string name="food_feed_price">$%.2f</string>
+    <string name="food_feed_rating">%.1f</string>
     <string name="food_feed_what_would">What would</string>
     <string name="food_feed_you_like">you like?</string>
 

@@ -52,18 +52,42 @@
 
     <TextView
         android:id="@+id/tv_price"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="21dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="@dimen/general_margin"
         android:fontFamily="@font/poppinsbold"
+        android:includeFontPadding="false"
         android:textColor="#73665C"
         android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/iv_favorite"
         app:layout_constraintStart_toEndOf="@id/iv_logo"
         app:layout_constraintTop_toBottomOf="@id/gl_center_horizontal"
         tools:text="$38.60" />
+
+    <ImageView
+        android:id="@+id/iv_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:contentDescription="@string/general_content_description"
+        android:src="@drawable/ic_star"
+        app:layout_constraintBottom_toBottomOf="@id/tv_price"
+        app:layout_constraintStart_toEndOf="@id/tv_price"
+        app:layout_constraintTop_toTopOf="@id/tv_price" />
+
+    <TextView
+        android:id="@+id/tv_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:fontFamily="@font/poppinsregular"
+        android:includeFontPadding="false"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_rating"
+        app:layout_constraintStart_toEndOf="@id/iv_rating"
+        app:layout_constraintTop_toTopOf="@id/iv_rating"
+        tools:text="5.00" />
 
     <ImageView
         android:id="@+id/iv_favorite"

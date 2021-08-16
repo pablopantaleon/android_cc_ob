@@ -36,6 +36,8 @@ class FoodFeedAdapter(
 		Glide.with(holder.ivLogo).load(food.imageUrl).into(holder.ivLogo)
 		holder.tvTitle.text = food.name
 		holder.tvPrice.text = holder.tvPrice.context.getString(R.string.food_feed_price, food.price)
+		holder.tvRating.text = holder.tvRating.context
+			.getString(R.string.food_feed_rating, food.rating)
 
 		// draw the respective fav icon depending of the liked state
 		if (food.isLiked) {
@@ -90,6 +92,7 @@ class FoodFeedAdapter(
 		val ivLogo: ImageView = binding.ivLogo
 		val tvTitle: TextView = binding.tvTitle
 		val tvPrice: TextView = binding.tvPrice
+		val tvRating: TextView = binding.tvRating
 		val ivFavoriteIcon: ImageView = binding.ivIcFavorite
 		val ivFavoriteBackground: ImageView = binding.ivFavorite
 	}
