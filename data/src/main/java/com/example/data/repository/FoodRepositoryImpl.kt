@@ -27,7 +27,7 @@ class FoodRepositoryImpl(
 			emit(DataResult.Success(foodList))
 		}.catch { e ->
 			Timber.e(e)
-			emit(DataResult.Failed(Throwable("Unkown Error")))
+			emit(DataResult.Failed(e))
 		}
 	}
 }
