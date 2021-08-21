@@ -8,7 +8,7 @@
 - MVVM
 
 **Note**
-Testing Credentials: minnie.craig@example.com
+Testing Credentials: minnie.craig@example.com / password
 
 # How it looks?
 
