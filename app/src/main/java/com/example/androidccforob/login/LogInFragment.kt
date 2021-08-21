@@ -47,16 +47,6 @@ class LogInFragment : Fragment() {
 		lifecycleScope.launch {
 			lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
 				//
-				// observe auth state changes
-				launch {
-					userViewModel.isLoggedInState.collect { result ->
-						// user is logged in
-						if (result is UseCaseResult.Success && result.data) {
-							findNavController().navigate(R.id.action_logInFragment_to_foodFeedFragment)
-						}
-					}
-				}
-				//
 				// draw the proper UI in order to reflect the current state
 				launch {
 					userViewModel.logInState.collect { result ->

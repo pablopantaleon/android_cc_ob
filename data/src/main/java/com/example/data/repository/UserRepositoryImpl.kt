@@ -3,6 +3,8 @@ package com.example.data.repository
 import com.example.core.DataResult
 import com.example.data.datasource.FirebaseDataSource
 import com.example.data.mapper.EntityMapper
+import com.example.data.model.FoodDataModel
+import com.example.domain.entity.Food
 import com.example.domain.entity.LikedTransaction
 import com.example.domain.entity.User
 import com.example.domain.repository.UserRepository
@@ -85,4 +87,10 @@ class UserRepositoryImpl(
 			Timber.d("[LikedState, Error] - foodId: $foodId, isLiked: $isLiked")
 		}
 	}
+}
+
+sealed class Result<out T> {
+	object Loading : Result<Nothing>()
+	data class Success<out T>(val data: T) : Result<T>()
+	data class Failed(val error: Throwable) : Result<Nothing>()
 }

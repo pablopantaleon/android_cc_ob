@@ -10,8 +10,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavOptions
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -73,23 +71,6 @@ class FoodFeedFragment : Fragment() {
 	private fun observeLiveEvents() {
 		lifecycleScope.launch {
 			lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-				//
-				// observe auth state changes
-				launch {
-					userViewModel.isLoggedInState.collect { result ->
-						// user is not logged in
-						if (result is UseCaseResult.Success && !result.data || result is UseCaseResult.Failed) {
-							val navOptions = NavOptions.Builder()
-							navOptions.setPopUpTo(R.id.splashFragment, true)
-							navOptions.setLaunchSingleTop(true)
-							findNavController().navigate(
-								R.id.action_foodFeedFragment_to_logInFragment,
-								null,
-								navOptions.build()
-							)
-						}
-					}
-				}
 				//
 				// draw the proper UI in order to reflect the current state
 				launch {
