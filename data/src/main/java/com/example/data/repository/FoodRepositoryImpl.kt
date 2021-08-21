@@ -3,7 +3,6 @@ package com.example.data.repository
 import com.example.core.DataResult
 import com.example.data.datasource.FirebaseDataSource
 import com.example.data.mapper.EntityMapper
-import com.example.data.model.FoodDataModel
 import com.example.domain.entity.Food
 import com.example.domain.repository.FoodRepository
 import kotlinx.coroutines.flow.Flow
@@ -29,18 +28,6 @@ class FoodRepositoryImpl(
 		}.catch { e ->
 			Timber.e(e)
 			emit(DataResult.Failed(e))
-			doSomethingWithFlow()
-		}
-	}
-
-	fun doSomethingWithFlow(): Flow<Result<List<FoodDataModel>>> {
-		return flow {
-			emit(Result.Loading)
-			val result = firebaseDataSource.getFoodItems()
-			emit(Result.Success(result))
-		}.catch { error ->
-			Timber.e(error)
-			emit(Result.Failed(error))
 		}
 	}
 }
