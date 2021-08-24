@@ -22,7 +22,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
@@ -78,47 +79,47 @@ class ProfileBottomSheetFragment : BottomSheetDialogFragment() {
 	 * 2. Update user profile
 	 */
 	private fun observeLiveEvents() {
-		lifecycleScope.launch {
-			lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-				//
-				// observe auth state changes
+		viewLifecycleOwner.lifecycleScope.launch {
+			viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
 				launch {
-					userViewModel.userState.collect { result ->
-						if (result is UseCaseResult.Success) {
-							Glide.with(binding.ivImageProfile)
-								.load(result.data.avatarUrl)
-								.centerCrop()
-								.apply(RequestOptions.circleCropTransform())
-								.into(binding.ivImageProfile)
-							binding.edName.setText(result.data.name)
-							binding.edCity.setText(result.data.city)
-							binding.edBio.setText(result.data.bio)
-						}
-					}
-				}
-				//
-				// observe update
-				launch {
-					userViewModel.updateUserState.collect { result ->
-						when (result) {
-							is UseCaseResult.Success -> {
-								handleUiLoadingState(false)
-								SnackbarFactory.createSuccessMessage(
-									binding.root,
-									getString(R.string.edit_your_profile_success),
-								).show()
+					//
+					// observe auth state changes
+					userViewModel.userState
+						.onEach { result ->
+							if (result is UseCaseResult.Success) {
+								Glide.with(binding.ivImageProfile)
+									.load(result.data.avatarUrl)
+									.centerCrop()
+									.apply(RequestOptions.circleCropTransform())
+									.into(binding.ivImageProfile)
+								binding.edName.setText(result.data.name)
+								binding.edCity.setText(result.data.city)
+								binding.edBio.setText(result.data.bio)
 							}
-							is UseCaseResult.Failed -> {
-								handleUiLoadingState(false)
-								SnackbarFactory.createErrorMessage(
-									binding.root,
-									getString(R.string.edit_your_profile_error),
-								).show()
+						}.launchIn(this)
+					//
+					// observe user updates
+					userViewModel.updateUserState
+						.onEach { result ->
+							when (result) {
+								is UseCaseResult.Success -> {
+									handleUiLoadingState(false)
+									SnackbarFactory.createSuccessMessage(
+										binding.root,
+										getString(R.string.edit_your_profile_success),
+									).show()
+								}
+								is UseCaseResult.Failed -> {
+									handleUiLoadingState(false)
+									SnackbarFactory.createErrorMessage(
+										binding.root,
+										getString(R.string.edit_your_profile_error),
+									).show()
+								}
+								is UseCaseResult.Loading -> handleUiLoadingState(true)
+								else -> handleUiLoadingState(false)
 							}
-							is UseCaseResult.Loading -> handleUiLoadingState(true)
-							else -> handleUiLoadingState(false)
-						}
-					}
+						}.launchIn(this)
 				}
 			}
 		}

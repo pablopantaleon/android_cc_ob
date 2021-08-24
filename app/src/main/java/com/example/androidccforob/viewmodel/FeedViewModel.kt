@@ -14,9 +14,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 
 /**
  * Created by Pablo Reyes [devpab@gmail.com] on 12/08/21.
@@ -50,10 +50,8 @@ class FeedViewModel @Inject constructor(
 	}
 
 	fun updateFoodLikeState(foodId: String, liked: Boolean) {
-		viewModelScope.launch {
-			updateFoodLikedStateUseCase.invoke(foodId, liked).collect { result ->
-				_updateFoodLikeState.value = result
-			}
-		}
+		updateFoodLikedStateUseCase.invoke(foodId, liked)
+			.onEach { _updateFoodLikeState.value = it }
+			.launchIn(viewModelScope)
 	}
 }

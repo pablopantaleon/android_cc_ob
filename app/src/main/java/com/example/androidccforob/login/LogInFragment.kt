@@ -13,7 +13,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import com.example.androidccforob.R
 import com.example.androidccforob.app.SnackbarFactory
 import com.example.androidccforob.databinding.FragmentLogInBinding
@@ -44,8 +43,8 @@ class LogInFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		setUpLogInForm()
-		lifecycleScope.launch {
-			lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+		viewLifecycleOwner.lifecycleScope.launch {
+			viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
 				//
 				// draw the proper UI in order to reflect the current state
 				launch {

@@ -23,7 +23,8 @@ import com.example.core.UseCaseResult
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
@@ -69,79 +70,80 @@ class FoodFeedFragment : Fragment() {
 	 * 4. Update liked state
 	 */
 	private fun observeLiveEvents() {
-		lifecycleScope.launch {
-			lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+		viewLifecycleOwner.lifecycleScope.launch {
+			viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
 				//
 				// draw the proper UI in order to reflect the current state
 				launch {
-					feedViewModel.allFoodItemsState.collect { result ->
-						when (result) {
-							is UseCaseResult.Failed -> {
-								binding.pbLoading.isVisible = false
-								SnackbarFactory.createErrorMessage(
-									binding.root,
-									getString(R.string.default_error)
-								).show()
-							}
-							is UseCaseResult.Loading -> {
-								binding.pbLoading.isVisible = true
-							}
-							is UseCaseResult.Success -> {
-								// setup Food Adapter
-								val foods = feedDataAdapter.getFeedFoodData(result.data)
-								foodFeedAdapter = FoodFeedAdapter(foods) { foodId, liked ->
-									feedViewModel.updateFoodLikeState(foodId, liked)
+					feedViewModel.allFoodItemsState
+						.onEach { result ->
+							when (result) {
+								is UseCaseResult.Failed -> {
+									binding.pbLoading.isVisible = false
+									SnackbarFactory.createErrorMessage(
+										binding.root,
+										getString(R.string.default_error)
+									).show()
 								}
-								binding.pbLoading.isVisible = false
-								binding.rvFeedFood.adapter = foodFeedAdapter
-								// setup Food Category Adapter
-								val categories = feedDataAdapter.getFeedFoodCategories(result.data)
-								binding.rvCategories.adapter =
-									FoodCategoryAdapter(categories) { filter ->
-										val filteredIds =
-											feedViewModel.onFilterChanged(filter, result)
-										val filteredFoods = foods.filter { it.id in filteredIds }
-										foodFeedAdapter.update(filteredFoods)
+								is UseCaseResult.Loading -> {
+									binding.pbLoading.isVisible = true
+								}
+								is UseCaseResult.Success -> {
+									// setup Food Adapter
+									val foods = feedDataAdapter.getFeedFoodData(result.data)
+									foodFeedAdapter = FoodFeedAdapter(foods) { foodId, liked ->
+										feedViewModel.updateFoodLikeState(foodId, liked)
 									}
+									binding.pbLoading.isVisible = false
+									binding.rvFeedFood.adapter = foodFeedAdapter
+									// setup Food Category Adapter
+									val categories =
+										feedDataAdapter.getFeedFoodCategories(result.data)
+									binding.rvCategories.adapter =
+										FoodCategoryAdapter(categories) { filter ->
+											val filteredIds =
+												feedViewModel.onFilterChanged(filter, result)
+											val filteredFoods =
+												foods.filter { it.id in filteredIds }
+											foodFeedAdapter.update(filteredFoods)
+										}
+								}
+								else -> binding.pbLoading.isVisible = false
 							}
-							else -> binding.pbLoading.isVisible = false
-						}
-					}
-				}
-				//
-				// observe auth state changes
-				launch {
-					userViewModel.userState.collect { result ->
-						if (result is UseCaseResult.Success) {
-							Glide.with(binding.ivImageProfile)
-								.load(result.data.avatarUrl)
-								.centerCrop()
-								.apply(RequestOptions.bitmapTransform(RoundedCorners(20)))
-								.into(binding.ivImageProfile)
-						}
-					}
-				}
-				//
-				// Observe food data liked state changes
-				launch {
-					feedViewModel.updateFoodLikedState.collect { result ->
-						if (result is UseCaseResult.Success) {
-							if (result.data.success) {
-								// NOOP
-								// This is expected and means that food item was updated correctly
-							} else if (::foodFeedAdapter.isInitialized) {
-								// Update liked state has failed then restore previous UI state
-								foodFeedAdapter.restoreFoodLikedState(
-									result.data.foodId,
-									result.data.liked
-								)
-								SnackbarFactory.createErrorMessage(
-									binding.root,
-									getString(R.string.default_error)
-								).show()
+						}.launchIn(this)
+					//
+					// observe auth state changes
+					userViewModel.userState
+						.onEach { result ->
+							if (result is UseCaseResult.Success) {
+								Glide.with(binding.ivImageProfile)
+									.load(result.data.avatarUrl)
+									.centerCrop()
+									.apply(RequestOptions.bitmapTransform(RoundedCorners(20)))
+									.into(binding.ivImageProfile)
 							}
-						}
-					}
+						}.launchIn(this)
+					//
+					// Observe food data liked state changes
+					feedViewModel.updateFoodLikedState
+						.onEach { result ->
+							if (result is UseCaseResult.Success) {
+								if (result.data.success) {
+									// NOOP
+									// This is expected and means that food item was updated correctly
+								} else if (::foodFeedAdapter.isInitialized) {
+									// Update liked state has failed then restore previous UI state
+									foodFeedAdapter.restoreFoodLikedState(
+										result.data.foodId,
+										result.data.liked
+									)
+									SnackbarFactory.createErrorMessage(
+										binding.root,
+										getString(R.string.default_error)
+									).show()
+								}
+							}
+						}.launchIn(this)
 				}
 			}
 		}

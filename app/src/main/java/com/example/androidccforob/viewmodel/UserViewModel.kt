@@ -17,9 +17,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 
 /**
  * Created by Pablo Reyes [devpab@gmail.com] on 11/08/21.
@@ -69,11 +69,9 @@ class UserViewModel @Inject constructor(
 	 * @param password
 	 */
 	fun logIn(email: String, password: String) {
-		viewModelScope.launch {
-			logInWithCredentialsUseCase.invoke(email, password).collect { result ->
-				_logInState.value = result
-			}
-		}
+		logInWithCredentialsUseCase.invoke(email, password)
+			.onEach { _logInState.value = it }
+			.launchIn(viewModelScope)
 	}
 
 	/**
@@ -91,16 +89,12 @@ class UserViewModel @Inject constructor(
 	}
 
 	fun updateUser(name: String?, city: String?, bio: String) {
-		viewModelScope.launch {
-			updateUserUseCase.invoke(name, city, bio).collect { result ->
-				_updateUserState.value = result
-			}
-		}
+		updateUserUseCase.invoke(name, city, bio)
+			.onEach { _updateUserState.value = it }
+			.launchIn(viewModelScope)
 	}
 
 	fun logOut() {
-		viewModelScope.launch {
-			logOutUseCase.invoke().collect { }
-		}
+		logOutUseCase.invoke().launchIn(viewModelScope)
 	}
 }
