@@ -7,6 +7,9 @@
 - Testing
 - MVVM
 
+**Note**
+Testing Credentials: minnie.craig@example.com / password
+
 # How it looks?
 
 <img src="https://github.com/pablopantaleon/android_cc_ob/blob/master/screenshots/demo.gif" width="240" />
